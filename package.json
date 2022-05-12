@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
   "dependencies": {
     "@netlify/functions": "^1.0.0",
     "discord-webhook-ts": "^5.0.0",
