@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "@netlify/functions": "^1.0.0"
+    "@netlify/functions": "^1.0.0",
+    "discord-webhook-ts": "^5.0.0",
+    "node-fetch": "^3.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.32"
   }
 }
