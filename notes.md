@@ -1,7 +1,7 @@
 # post from tfs
 ```
 Method: POST
-URI: https://discord.com/api/webhooks/972227866840428685/tqRZdMTUUqjnt278iW7cc5IpEQXdIAj9QztWNzdKA2efNKD_k_CxnBKM3CUv2ke6gKdF
+URI: 
 HTTP Version: 1.1
 Headers:
 {
