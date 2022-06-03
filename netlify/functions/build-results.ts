@@ -5,38 +5,43 @@ import { POST as DiscordPost } from "../../types/DiscordPost"
 const handler: Handler = async (event) => {
   const msgEndpoint = process.env.BUILD_MSG_ENDPOINT ?? '';
   const content = JSON.parse(event.body ?? '');
+  const getVersion = content.resource.sourceGetVersion;
+  const [_, branch, commit] = getVersion.split(':');
+  const branchName = branch.split('/').at(-1);
+  const shortCommit = commit.substring(0, 8);
+  const requestedBy = content.resource.requests[0].requestedFor.displayName;
+  const durationStr = duration(content.resource.startTime, content.resource.finishTime);
   const postBody: DiscordPost = {
     embeds: [
       {
-
-        "title": `${content.msg.text}`,
+        "title": `${content.message.text}`,
         "color": content.eventType === 'build.complete' ? 5612386 : 12649008,
         "fields": [
           {
             "name": "Requested By",
-            "value": "Normal Paulk",
+            "value": `${requestedBy}`,
             "inline": true
           },
           {
             "name": "Duration",
-            "value": "00:02:03"
-
-          },
-          {
-            "name": "Build pipeline",
-            "value": "ConsumerAddressModule",
+            "value": `${durationStr}`,
             "inline": true
           },
           {
             "name": "Build",
-            "value": "[ConsumerAddressModule_20150407.2](https://fabrikam-fiber-inc.visualstudio.com/web/build.aspx?pcguid=5023c10b-bef3-41c3-bf53-686c4e34ee9e&builduri=vstfs%3a%2f%2f%2fBuild%2fBuild%2f3)",
+            "value": `${content.detailedMessage.markdown}`
+          },
+          {
+            "name": "Branch",
+            "value": `${branchName} ${branchToEmoji(branchName)}`,
+            "inline": true
+          },
+          {
+            "name": "Commit",
+            "value": `${shortCommit}`,
             "inline": true
           }
         ]
-      },
-      {
-        title: "From TFS",
-        description: JSON.stringify(event.body)
       }
     ]
   }
@@ -53,3 +58,21 @@ const handler: Handler = async (event) => {
 }
 
   export {handler};
+
+function duration(startStr: string, finishStr: string): string {
+  const start = Date.parse(startStr);
+  const finish = Date.parse(finishStr);
+  const totalSeconds = (finish - start) / 1000;
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+  return `${minutes}:${seconds}s`;
+}
+
+function branchToEmoji(branch: string): string {
+  switch(branch) {
+    case 'thorium-turkey':
+      return '🦃';
+    default:
+      return '';
+  }
+}
