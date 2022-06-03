@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "echo 'done'"
+    "dev": "netlify dev"
   },
   "dependencies": {
     "@netlify/functions": "^1.0.0",

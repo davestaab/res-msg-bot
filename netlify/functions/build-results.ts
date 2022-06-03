@@ -4,12 +4,13 @@ import { POST as DiscordPost } from "../../types/DiscordPost"
 
 const handler: Handler = async (event) => {
   const msgEndpoint = process.env.BUILD_MSG_ENDPOINT ?? '';
+  const content = JSON.parse(event.body ?? '');
   const postBody: DiscordPost = {
     embeds: [
       {
 
-        "title": "Build ConsumerAddressModule_20150407.2 succeeded",
-        "color": 5612386,
+        "title": `${content.msg.text}`,
+        "color": content.eventType === 'build.complete' ? 5612386 : 12649008,
         "fields": [
           {
             "name": "Requested By",
@@ -46,9 +47,9 @@ const handler: Handler = async (event) => {
     headers: {'Content-Type': 'application/json'}
   });
   return {
-    statusCode: response.status
+    statusCode: 200,
+    body: `post response (${response.status}): ${response.body}`
   };
 }
-  ;
 
   export {handler};
