@@ -1,6 +1,8 @@
 import { Handler } from "@netlify/functions";
 import fetch from "node-fetch";
 import { POST as DiscordPost } from "../../types/DiscordPost"
+const emojiLookup = new Map<string, string>();
+emojiLookup.set('thorium-turkey', '🦃');
 
 const handler: Handler = async (event) => {
   const msgEndpoint = process.env.BUILD_MSG_ENDPOINT ?? '';
@@ -11,12 +13,31 @@ const handler: Handler = async (event) => {
   const shortCommit = commit.substring(0, 8);
   const requestedBy = content.resource.requests[0].requestedFor.displayName;
   const durationStr = duration(content.resource.startTime, content.resource.finishTime);
+  const buildName = content.resource.definition.name;
   const postBody: DiscordPost = {
     embeds: [
       {
         "title": `${content.message.text}`,
         "color": content.eventType === 'build.complete' ? 5612386 : 12649008,
         "fields": [
+          {
+            "name": `Build Config`,
+            "value": `${buildName}`
+          },
+          {
+            "name": "Branch",
+            "value": `${branchName} ${emojiLookup.get(branchName) ?? ''}`,
+            "inline": true
+          },
+          {
+            "name": "Commit",
+            "value": `${shortCommit}`,
+            "inline": true
+          },
+          {
+            "name": "Build",
+            "value": `${content.detailedMessage.markdown}`
+          },
           {
             "name": "Requested By",
             "value": `${requestedBy}`,
@@ -25,20 +46,6 @@ const handler: Handler = async (event) => {
           {
             "name": "Duration",
             "value": `${durationStr}`,
-            "inline": true
-          },
-          {
-            "name": "Build",
-            "value": `${content.detailedMessage.markdown}`
-          },
-          {
-            "name": "Branch",
-            "value": `${branchName} ${branchToEmoji(branchName)}`,
-            "inline": true
-          },
-          {
-            "name": "Commit",
-            "value": `${shortCommit}`,
             "inline": true
           }
         ]
@@ -57,7 +64,7 @@ const handler: Handler = async (event) => {
   };
 }
 
-  export {handler};
+export {handler};
 
 function duration(startStr: string, finishStr: string): string {
   const start = Date.parse(startStr);
@@ -66,15 +73,6 @@ function duration(startStr: string, finishStr: string): string {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = Math.floor(totalSeconds % 60);
   return `${minutes}:${seconds}s`;
-}
-
-function branchToEmoji(branch: string): string {
-  switch(branch) {
-    case 'thorium-turkey':
-      return '🦃';
-    default:
-      return '';
-  }
 }
 
 function last(input: Array<T>): T {
