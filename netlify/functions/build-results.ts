@@ -53,14 +53,13 @@ const handler: Handler = async (event) => {
     ]
   }
 
-  const response = await fetch(msgEndpoint, {
+  await fetch(msgEndpoint, {
     method: 'post',
     body: JSON.stringify(postBody),
     headers: {'Content-Type': 'application/json'}
   });
   return {
-    statusCode: 200,
-    body: `post response (${response.status}): ${response.body}`
+    statusCode: 204
   };
 }
 
@@ -75,6 +74,6 @@ function duration(startStr: string, finishStr: string): string {
   return `${minutes}:${seconds}s`;
 }
 
-function last(input: Array<T>): T {
+function last(input: Array<string>): string {
   return input[input.length-1];
 }
