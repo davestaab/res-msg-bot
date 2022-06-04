@@ -7,7 +7,7 @@ const handler: Handler = async (event) => {
   const content = JSON.parse(event.body ?? '');
   const getVersion = content.resource.sourceGetVersion;
   const [_, branch, commit] = getVersion.split(':');
-  const branchName = branch.split('/').at(-1);
+  const branchName = last(branch.split('/'));
   const shortCommit = commit.substring(0, 8);
   const requestedBy = content.resource.requests[0].requestedFor.displayName;
   const durationStr = duration(content.resource.startTime, content.resource.finishTime);
@@ -75,4 +75,8 @@ function branchToEmoji(branch: string): string {
     default:
       return '';
   }
+}
+
+function last(input: Array<T>): T {
+  return input[input.length-1];
 }
