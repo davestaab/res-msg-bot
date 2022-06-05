@@ -1,14 +1,18 @@
 import { Handler } from "@netlify/functions";
 import { POST as DiscordPost } from "../../types/DiscordPost"
 import fetch from "node-fetch";
+import format from 'date-fns/format';
+
 const images = [
   "https://res-msg-bot.netlify.app/images/Miss_minutes.png",
   "https://res-msg-bot.netlify.app/images/tva-modius.jpg",
   "https://res-msg-bot.netlify.app/images/tva-leader.png"
 ];
+
 const handler: Handler = async () => {
   const resEndpoint = process.env.TVA_RES_ENDPOINT ?? '';
   const postBody: DiscordPost = {
+    content: `@here ${format(new Date(), 'EEE MMM d')}`,
     embeds: [
       {
         title: "Don't forget....",
@@ -17,10 +21,10 @@ const handler: Handler = async () => {
           " part to protect and perserve the Sacred Timeline.\n\n" +
           "-- The Time-Keepers",
         image: {
-          url: images[2]
+          url: randomImage()
         }
       }
-    ]
+    ],
   }
   await fetch(resEndpoint, {
     method: 'post',
@@ -42,5 +46,5 @@ function randomImage() {
  * Returns a random number between min (inclusive) and max (exclusive)
  */
 function getRandomArbitrary(min:number, max:number) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
