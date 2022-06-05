@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 const images = [
   "https://res-msg-bot.netlify.app/images/Miss_minutes.png",
   "https://res-msg-bot.netlify.app/images/tva-modius.jpg",
-  "https://res-msg-bot.netlify.app/images/tva-leader.jpg"
+  "https://res-msg-bot.netlify.app/images/tva-leader.png"
 ];
 const handler: Handler = async () => {
   const resEndpoint = process.env.TVA_RES_ENDPOINT ?? '';
