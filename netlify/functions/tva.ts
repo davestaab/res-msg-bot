@@ -1,4 +1,4 @@
-import { Handler } from "@netlify/functions";
+import { Handler, schedule } from "@netlify/functions";
 import { POST as DiscordPost } from "../../types/DiscordPost"
 import fetch from "node-fetch";
 import format from 'date-fns/format';
@@ -9,7 +9,7 @@ const images = [
   "https://res-msg-bot.netlify.app/images/tva-leader.png"
 ];
 
-const handler: Handler = async () => {
+const handlerFunc: Handler = async () => {
   const resEndpoint = process.env.TVA_RES_ENDPOINT ?? '';
   const postBody: DiscordPost = {
     content: `@here ${format(new Date(), 'EEE MMM d')}`,
@@ -36,7 +36,8 @@ const handler: Handler = async () => {
   };
 }
 
-export {handler};
+const handler = schedule("0 13 * * *", handlerFunc)
+export { handler };
 
 function randomImage() {
   return images[getRandomArbitrary(0,images.length)];
