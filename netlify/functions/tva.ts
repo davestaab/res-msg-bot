@@ -3,7 +3,8 @@ import { POST as DiscordPost } from "../../types/DiscordPost"
 import fetch from "node-fetch";
 const images = [
   "https://res-msg-bot.netlify.app/images/Miss_minutes.png",
-  "https://res-msg-bot.netlify.app/images/tva-modius.jpg"
+  "https://res-msg-bot.netlify.app/images/tva-modius.jpg",
+  "https://res-msg-bot.netlify.app/images/tva-leader.jpg"
 ];
 const handler: Handler = async () => {
   const resEndpoint = process.env.TVA_RES_ENDPOINT ?? '';
@@ -16,7 +17,7 @@ const handler: Handler = async () => {
           " part to protect and perserve the Sacred Timeline.\n\n" +
           "-- The Time-Keepers",
         image: {
-          url: images[1]
+          url: images[2]
         }
       }
     ]
@@ -34,7 +35,7 @@ const handler: Handler = async () => {
 export {handler};
 
 function randomImage() {
-  return images[getRandomArbitrary(0,2)];
+  return images[getRandomArbitrary(0,images.length)];
 }
 
 /**
