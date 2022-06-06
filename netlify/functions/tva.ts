@@ -36,7 +36,7 @@ const handlerFunc: Handler = async () => {
   };
 }
 
-const handler = schedule("15 18 * * *", handlerFunc)
+const handler = schedule("0 12 * * mon-fri", handlerFunc)
 export { handler };
 
 function randomImage() {
