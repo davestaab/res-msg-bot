@@ -1,6 +1,6 @@
 import { Handler } from "@netlify/functions";
 import fetch from "node-fetch";
-import { POST as DiscordPost } from "../../types/DiscordPost"
+import { POST as DiscordPost } from "../types/DiscordPost"
 const emojiLookup = new Map<string, string>();
 emojiLookup.set('thorium-turkey', '🦃');
 

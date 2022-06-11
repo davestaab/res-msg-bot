@@ -1,5 +1,5 @@
 import { Handler } from "@netlify/functions";
-import { POST as DiscordPost } from "../../types/DiscordPost"
+import { POST as DiscordPost } from "../types/DiscordPost"
 import fetch from "node-fetch";
 import format from 'date-fns/format';
 

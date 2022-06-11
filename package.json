@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "dev": "netlify dev"
+    "dev": "netlify dev",
+    "check:types": "tsc --noEmit"
   },
   "dependencies": {
     "@netlify/functions": "^1.0.0",
     "date-fns": "^2.28.0",
-    "discord-webhook-ts": "^5.0.0",
     "node-fetch": "^3.2.4"
   },
   "devDependencies": {
