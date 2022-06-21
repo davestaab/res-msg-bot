@@ -11,6 +11,26 @@ The true praise is reserved for others who step up and fix your crap.
 
 
   Scenario: Change to fixed when currently broken
+    Given the current test status is
+    """
+    {
+      "who": "Dave",
+      "what": "borkd",
+      "when": "2022-06-19T11:25:00z"
+    }
+    """
+    And the build run is by "Dave"
+    And the build run is "successful"
+    And the build run happens at "2022-06-19:11:30:00z"
+    When the build run posts it's results
+    Then the current test status is:
+    """
+    {
+      who: "Dave"
+      what: "fixed"
+      when: "2022-06-19:11:30:00z"
+    }
+    """
 
   Scenario: Change to poopsmithed when currently broken
 
