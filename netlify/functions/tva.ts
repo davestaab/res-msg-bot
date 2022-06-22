@@ -18,7 +18,7 @@ const handler: Handler = async () => {
         title: "Don't forget....",
         description:  "Just a friendly reminder from the Time Variance Authority: " +
           "Avoid a nexus event and enter your time! We can all do our" +
-          " part to protect and perserve the Sacred Timeline.\n\n" +
+          " part to protect and preserve the Sacred Timeline.\n\n" +
           "-- The Time-Keepers",
         image: {
           url: randomImage()
