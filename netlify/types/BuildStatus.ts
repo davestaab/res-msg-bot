@@ -5,7 +5,7 @@ export interface BuildStatus {
 }
 
 export enum Status {
-  BORKD = 'borkd',
-  POOPSMITH = 'poopsmith',
-  FIXED = 'fixed'
+  BORKD= "BORKD",
+  POOPSMITH= "POOPSMITH",
+  FIXED= "FIXED",
 }

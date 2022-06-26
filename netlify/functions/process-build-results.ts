@@ -1,36 +1,33 @@
 import {Handler} from "@netlify/functions";
-import {getCurrentTestStatusJSON, setTestStatus} from "./test-status";
+// import {getCurrentTestStatusJSON, setTestStatus} from "./test-status";
 import {BuildStatus, Status} from "../types/BuildStatus";
+import {BuildResults} from "../types/BuildResults";
+import {getCurrentStatus, setCurrentStatus} from "../pantryClient";
 
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
-  const content = JSON.parse(event.body ?? '');
+  const content = JSON.parse(event.body ?? '') as BuildResults;
   const {status: newStatus} = content.resource;
-  const lastChangedBy = lastChangedByUniqueName(content);
-  const currentStatus = await getCurrentTestStatusJSON();
-  const updateStatus = updateStatusFactory(currentStatus, content.createdDate);
-  console.log(`last changed by ${lastChangedBy}`);
-  console.log(`currentStatus ${JSON.stringify(currentStatus)}`);
-  console.log(`newStatus ${newStatus}`);
+  const changedBy = changedByUniqueName(content);
+  const currentStatus = await getCurrentStatus();
+  const updateStatus = updateStatusFactory(changedBy, content.createdDate);
   // compare newStatus to current status
   // case 1: do nothing if newStatus matches currentStatus
   if ((newStatusGood(newStatus) && currentStatusGood(currentStatus)) || (newStatusBad(newStatus) && currentStatusBad(currentStatus))) {
     // no change in status, do nothing
-    console.log()
-  } else if (currentStatusGood(currentStatus)) {
-    // good news it's fixed! but is it fixed or just poopsmithed?
-    if (lastChangedBy === currentStatus.who) {
+  } else if (currentStatusBad(currentStatus)) {
+    // good news it's fixed! but is it fixed or just poop-smithed?
+    if (changedBy === currentStatus.who) {
       // just poopsmithed
-      console.log(await setTestStatus(updateStatus(Status.POOPSMITH)))
+      await setCurrentStatus(updateStatus(Status.POOPSMITH));
     } else {
       // high paise!! 🙌
-      console.log(await setTestStatus(updateStatus(Status.FIXED)))
+      await setCurrentStatus(updateStatus(Status.FIXED));
     }
   } else if (currentStatusBad(currentStatus)) {
     // oh boy, someone has the golden poo
-    console.log(await setTestStatus(updateStatus(Status.BORKD)));
+    await setCurrentStatus(updateStatus(Status.BORKD));
   }
-
   return {
     statusCode: 204,
   }
@@ -46,19 +43,20 @@ function currentStatusBad(status: BuildStatus) {
   return !currentStatusGood(status);
 }
 
-function newStatusGood(status: string) {
+function newStatusGood(status: string | undefined) {
   return status === succeededStatus;
 }
 
-function newStatusBad(status: string) {
+function newStatusBad(status: string | undefined) {
   return !newStatusGood(status);
 }
 
-function lastChangedByUniqueName(content: any): string {
+function changedByUniqueName(content: any): string {
   return content.resource.lastChangedBy.uniqueName;
 }
 
-function updateStatusFactory({ who }: BuildStatus, when: string) {
+function updateStatusFactory(who:string, when?: string) {
+  if(!when) throw 'updateStatusFactory: when argument missing';
   return (what: Status): BuildStatus => {
     return {
       what,

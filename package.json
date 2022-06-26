@@ -2,8 +2,7 @@
   "scripts": {
     "dev": "netlify dev",
     "check:types": "tsc --noEmit",
-    "test": "cucumber-js",
-    "test:snippets": "cucumber-js"
+    "test": "cucumber-js"
   },
   "dependencies": {
     "@netlify/functions": "^1.0.0",
@@ -14,7 +13,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "^8.3.0",
     "@types/node": "^17.0.32",
-    "msw": "^0.42.1",
+    "msw": "^0.42.3",
     "ts-node": "^10.8.1"
   }
 }
