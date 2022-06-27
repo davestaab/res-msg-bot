@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "netlify dev",
     "check:types": "tsc --noEmit",
-    "test": "cucumber-js"
+    "test": "cucumber-js",
+    "copy:testResults": "mv cucumber-report.html dist/"
   },
   "dependencies": {
     "@netlify/functions": "^1.0.0",
