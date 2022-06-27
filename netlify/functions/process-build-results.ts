@@ -24,7 +24,7 @@ const handler: Handler = async (event) => {
       // high paise!! 🙌
       await setCurrentStatus(updateStatus(Status.FIXED));
     }
-  } else if (currentStatusBad(currentStatus)) {
+  } else if (currentStatusGood(currentStatus)) {
     // oh boy, someone has the golden poo
     await setCurrentStatus(updateStatus(Status.BORKD));
   }
