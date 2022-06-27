@@ -48,7 +48,3 @@ Feature: Results are processed correctly
     And the build run by "Dave" at 3:06 PM was unsuccessful
     When the build run posts it's results
     Then the build status is BORKD by "Dave" at 03:06 PM
-
-  Scenario: Handle unknown build status
-    Unknown build status should be treated as a failure.
-    It's probably a partial success or problem on the biuld server.

@@ -51,8 +51,8 @@ function newStatusBad(status: string | undefined) {
   return !newStatusGood(status);
 }
 
-function changedByUniqueName(content: any): string {
-  return content.resource.lastChangedBy.uniqueName;
+function changedByUniqueName(content: BuildResults): string {
+  return content.resource.requests[0].requestedFor.uniqueName ?? 'unknown';
 }
 
 function updateStatusFactory(who:string, when?: string) {

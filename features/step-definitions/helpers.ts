@@ -4,21 +4,24 @@ import {Event} from "@netlify/functions/dist/function/event";
 const buildResults: BuildResults = {
   resource: {
     status: undefined,
-    lastChangedBy: {
-      uniqueName: undefined,
-    }
+    requests: [{
+      requestedFor: {
+        uniqueName: undefined,
+      },
+    }],
   },
   createdDate: undefined
 };
 
 export function resetBuildResults() {
   buildResults.resource.status = undefined;
-  buildResults.resource.lastChangedBy.uniqueName = undefined;
+  buildResults.resource.requests[0].requestedFor.uniqueName = undefined;
   buildResults.createdDate = undefined;
 }
 
 export function setWho(who: string) {
-  buildResults.resource.lastChangedBy.uniqueName = who;
+  buildResults.resource.requests[0].requestedFor.uniqueName = who;
+
 }
 
 export function setWhat(status: boolean) {

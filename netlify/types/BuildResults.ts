@@ -5,7 +5,11 @@ export interface BuildResults {
 
 export interface Resource {
   status?: string;
-  lastChangedBy: Person;
+  requests: Request[];
+}
+
+export interface Request {
+  requestedFor: Person;
 }
 
 export interface Person {
