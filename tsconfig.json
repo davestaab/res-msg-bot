@@ -18,5 +18,6 @@
     "src/**/*.vue",
     "netlify/**/*.ts",
     "features/**/*.ts",
+    ".eslintrc.js"
   ]
 }
