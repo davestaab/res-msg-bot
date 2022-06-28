@@ -1,5 +1,4 @@
 export default interface Attachment {
-
   /**
    * Attachment ID.
    */
@@ -34,5 +33,4 @@ export default interface Attachment {
    * Width of the file. (if image)
    */
   width: number;
-
 }

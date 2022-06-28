@@ -39,11 +39,10 @@ export default interface Embed {
    */
   color?: number;
 
-
   /**
    * Fields information.
    * Up to 25 fields.
    */
   fields?: EmbedField[];
-  image?: { url: string }
+  image?: { url: string };
 }

@@ -1,16 +1,18 @@
-import {BuildResults} from "../../netlify/types/BuildResults";
-import {Event} from "@netlify/functions/dist/function/event";
+import { BuildResults } from '../../src/types/BuildResults';
+import { Event } from '@netlify/functions/dist/function/event';
 
 const buildResults: BuildResults = {
   resource: {
     status: undefined,
-    requests: [{
-      requestedFor: {
-        uniqueName: undefined,
+    requests: [
+      {
+        requestedFor: {
+          uniqueName: undefined,
+        },
       },
-    }],
+    ],
   },
-  createdDate: undefined
+  createdDate: undefined,
 };
 
 export function resetBuildResults() {
@@ -21,7 +23,6 @@ export function resetBuildResults() {
 
 export function setWho(who: string) {
   buildResults.resource.requests[0].requestedFor.uniqueName = who;
-
 }
 
 export function setWhat(status: boolean) {

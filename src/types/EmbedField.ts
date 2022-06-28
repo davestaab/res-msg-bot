@@ -4,7 +4,6 @@
  * @link https://discordapp.com/developers/docs/resources/channel#embed-object-embed-field-structure
  */
 export default interface EmbedField {
-
   /**
    * Name of the field.
    * Up to 256 characters.
@@ -21,5 +20,4 @@ export default interface EmbedField {
    * Whether or not this field should be displayed inline.
    */
   inline?: boolean;
-
 }

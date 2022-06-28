@@ -1,25 +1,25 @@
-import {Handler} from "@netlify/functions";
-import {POST as DiscordPost} from "../types/DiscordPost"
-import fetch from "node-fetch";
+import { Handler } from '@netlify/functions';
+import { POST as DiscordPost } from '../../src/types/DiscordPost';
+import fetch from 'node-fetch';
 import format from 'date-fns/format';
 
 const images = [
-  "https://res-msg-bot.netlify.app/images/TVA-A-01.png",
-  "https://res-msg-bot.netlify.app/images/TVA-A-02.png",
-  "https://res-msg-bot.netlify.app/images/TVA-A-03.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-02.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-03.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-04.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-05.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-06.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-07.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-08.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-10.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-11.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-12.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-13.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-14.jpg",
-  "https://res-msg-bot.netlify.app/images/TVA-15.jpg",
+  'https://res-msg-bot.netlify.app/images/TVA-A-01.png',
+  'https://res-msg-bot.netlify.app/images/TVA-A-02.png',
+  'https://res-msg-bot.netlify.app/images/TVA-A-03.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-02.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-03.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-04.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-05.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-06.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-07.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-08.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-10.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-11.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-12.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-13.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-14.jpg',
+  'https://res-msg-bot.netlify.app/images/TVA-15.jpg',
 ];
 
 const handler: Handler = async () => {
@@ -29,27 +29,28 @@ const handler: Handler = async () => {
     embeds: [
       {
         title: "Don't forget....",
-        description: "Just a friendly reminder from the Time Variance Authority: " +
-          "Avoid a nexus event and enter your time! We can all do our" +
-          " part to protect and preserve the Sacred Timeline.\n\n" +
-          "-- The Time-Keepers",
+        description:
+          'Just a friendly reminder from the Time Variance Authority: ' +
+          'Avoid a nexus event and enter your time! We can all do our' +
+          ' part to protect and preserve the Sacred Timeline.\n\n' +
+          '-- The Time-Keepers',
         image: {
-          url: randomImage()
-        }
-      }
+          url: randomImage(),
+        },
+      },
     ],
-  }
+  };
   await fetch(resEndpoint, {
     method: 'post',
     body: JSON.stringify(postBody),
-    headers: {'Content-Type': 'application/json'}
+    headers: { 'Content-Type': 'application/json' },
   });
   return {
     statusCode: 204,
   };
-}
+};
 
-export {handler};
+export { handler };
 
 function randomImage() {
   return images[getRandomArbitrary(0, images.length)];

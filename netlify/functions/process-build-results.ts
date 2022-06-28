@@ -1,19 +1,21 @@
-import {Handler} from "@netlify/functions";
-// import {getCurrentTestStatusJSON, setTestStatus} from "./test-status";
-import {BuildStatus, Status} from "../types/BuildStatus";
-import {BuildResults} from "../types/BuildResults";
-import {getCurrentStatus, setCurrentStatus} from "../pantryClient";
+import { Handler } from '@netlify/functions';
+import { BuildStatus, Status } from '../../src/types/BuildStatus';
+import { BuildResults } from '../../src/types/BuildResults';
+import { getCurrentStatus, setCurrentStatus } from '../pantryClient';
 
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
   const content = JSON.parse(event.body ?? '') as BuildResults;
-  const {status: newStatus} = content.resource;
+  const { status: newStatus } = content.resource;
   const changedBy = changedByUniqueName(content);
   const currentStatus = await getCurrentStatus();
   const updateStatus = updateStatusFactory(changedBy, content.createdDate);
   // compare newStatus to current status
   // case 1: do nothing if newStatus matches currentStatus
-  if ((newStatusGood(newStatus) && currentStatusGood(currentStatus)) || (newStatusBad(newStatus) && currentStatusBad(currentStatus))) {
+  if (
+    (newStatusGood(newStatus) && currentStatusGood(currentStatus)) ||
+    (newStatusBad(newStatus) && currentStatusBad(currentStatus))
+  ) {
     // no change in status, do nothing
   } else if (currentStatusBad(currentStatus)) {
     // good news it's fixed! but is it fixed or just poop-smithed?
@@ -30,13 +32,13 @@ const handler: Handler = async (event) => {
   }
   return {
     statusCode: 204,
-  }
-}
+  };
+};
 
-export {handler};
+export { handler };
 
-function currentStatusGood({what}: BuildStatus) {
-  return what === Status.FIXED || what === Status.POOPSMITH
+function currentStatusGood({ what }: BuildStatus) {
+  return what === Status.FIXED || what === Status.POOPSMITH;
 }
 
 function currentStatusBad(status: BuildStatus) {
@@ -55,13 +57,13 @@ function changedByUniqueName(content: BuildResults): string {
   return content.resource.requests[0].requestedFor.uniqueName ?? 'unknown';
 }
 
-function updateStatusFactory(who:string, when?: string) {
-  if(!when) throw 'updateStatusFactory: when argument missing';
+function updateStatusFactory(who: string, when?: string) {
+  if (!when) throw 'updateStatusFactory: when argument missing';
   return (what: Status): BuildStatus => {
     return {
       what,
       who,
-      when
-    }
-  }
+      when,
+    };
+  };
 }

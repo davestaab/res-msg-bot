@@ -17,5 +17,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "netlify/**/*.ts",
+    "features/**/*.ts",
   ]
 }

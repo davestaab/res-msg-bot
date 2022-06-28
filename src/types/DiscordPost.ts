@@ -1,9 +1,7 @@
 import Embed from './Embed';
 import Attachment from './Attachment';
 
-
 interface Base {
-
   /**
    * Webhook username override.
    */
@@ -47,4 +45,4 @@ interface Embeds {
  *
  * @link https://discordapp.com/developers/docs/resources/webhook#execute-webhook
  */
-export type POST = Base & Content | File | Embeds;
+export type POST = (Base & Content) | File | Embeds;
