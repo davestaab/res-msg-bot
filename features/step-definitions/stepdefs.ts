@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { getBuildStatus, setBuildStatus } from '../mocks/handlers';
+import { getBuildStatus, setBuildStatus, setFriendlyNameState } from '../mocks/handlers';
 import { setWho, setWhat, setWhen, getBuildResults, createEvent } from './helpers';
 import { handler } from '../../netlify/functions/process-build-results';
 import { Context } from '@netlify/functions/dist/function/context';
@@ -27,6 +27,9 @@ Given(
     setWhat(what);
   }
 );
+Given('the friendly name mapping is:', async function (docString) {
+  setFriendlyNameState(JSON.parse(docString));
+});
 
 // WHEN
 

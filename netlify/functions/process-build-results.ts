@@ -1,13 +1,13 @@
 import { Handler } from '@netlify/functions';
 import { BuildStatus, Status } from '../../src/types/BuildStatus';
 import { BuildResults } from '../../src/types/BuildResults';
-import { getCurrentStatus, setCurrentStatus } from '../pantryClient';
+import { getCurrentStatus, setCurrentStatus, getFriendlyNameMap } from '../pantryClient';
 
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
   const content = JSON.parse(event.body ?? '') as BuildResults;
   const { status: newStatus } = content.resource;
-  const changedBy = changedByUniqueName(content);
+  const changedBy = await changedByName(content);
   const currentStatus = await getCurrentStatus();
   const updateStatus = updateStatusFactory(changedBy, content.createdDate);
   // compare newStatus to current status
@@ -53,8 +53,10 @@ function newStatusBad(status: string | undefined) {
   return !newStatusGood(status);
 }
 
-function changedByUniqueName(content: BuildResults): string {
-  return content.resource.requests[0].requestedFor.uniqueName ?? 'unknown';
+async function changedByName(content: BuildResults) {
+  const nameMap = await getFriendlyNameMap();
+  const name = content.resource.requests[0].requestedFor.uniqueName ?? 'unknown';
+  return nameMap[name] ?? name;
 }
 
 function updateStatusFactory(who: string, when?: string) {
