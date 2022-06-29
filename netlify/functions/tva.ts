@@ -3,23 +3,27 @@ import { POST as DiscordPost } from '../../src/types/DiscordPost';
 import fetch from 'node-fetch';
 import format from 'date-fns/format';
 
+const hash = '1a03c4b2fa58ed70c7269647c8b4938a8a3d60f9';
+const urlBase = `https://raw.githubusercontent.com/davestaab/res-msg-bot/${hash}/images`;
+
 const images = [
-  'https://res-msg-bot.netlify.app/images/TVA-A-01.png',
-  'https://res-msg-bot.netlify.app/images/TVA-A-02.png',
-  'https://res-msg-bot.netlify.app/images/TVA-A-03.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-02.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-03.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-04.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-05.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-06.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-07.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-08.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-10.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-11.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-12.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-13.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-14.jpg',
-  'https://res-msg-bot.netlify.app/images/TVA-15.jpg',
+  // This file doesn't exist, it's not in the images folder...
+  // `${urlBase}/TVA-A-01.png`,
+  `${urlBase}/TVA-A-02.png`,
+  `${urlBase}/TVA-A-03.jpg`,
+  `${urlBase}/TVA-02.jpg`,
+  `${urlBase}/TVA-03.jpg`,
+  `${urlBase}/TVA-04.jpg`,
+  `${urlBase}/TVA-05.jpg`,
+  `${urlBase}/TVA-06.jpg`,
+  `${urlBase}/TVA-07.jpg`,
+  `${urlBase}/TVA-08.jpg`,
+  `${urlBase}/TVA-10.jpg`,
+  `${urlBase}/TVA-11.jpg`,
+  `${urlBase}/TVA-12.jpg`,
+  `${urlBase}/TVA-13.jpg`,
+  `${urlBase}/TVA-14.jpg`,
+  `${urlBase}/TVA-15.jpg`,
 ];
 
 const handler: Handler = async () => {
