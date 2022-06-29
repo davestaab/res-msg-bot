@@ -1,7 +1,8 @@
 {
   "scripts": {
     "check:types": "tsc --noEmit",
-    "copy:testResults": "mv cucumber-report.html dist/",
+    "copy:testResults": "mv cucumber-report.html dist/specs.html",
+    "copy:images": "cp -r images dist/images",
     "dev": "netlify dev",
     "lint": "eslint --ext js,ts,jsx,tsx,vue --cache --fix",
     "test": "cucumber-js"

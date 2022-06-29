@@ -18,6 +18,7 @@
     "src/**/*.vue",
     "netlify/**/*.ts",
     "features/**/*.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "cucumber.js"
   ]
 }

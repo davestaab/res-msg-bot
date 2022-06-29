@@ -3,9 +3,9 @@ module.exports = {
     requireModule: ['ts-node/register'],
     require: ['features/**/*.ts'],
     formatOptions: {
-      snippetInterface: "async-await"
+      snippetInterface: 'async-await',
     },
     format: ['html:cucumber-report.html'],
     publishQuiet: true,
-  }
+  },
 };
