@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { getBuildStatus, setBuildStatus, setFriendlyNameState } from '../mocks/handlers';
-import { setWho, setWhat, setWhen, getBuildResults, createEvent } from './helpers';
+import { setWho, setWhat, setWhen, getBuildResults, createEvent, setId } from './helpers';
 import { handler } from '../../netlify/functions/process-build-results';
 import { Context } from '@netlify/functions/dist/function/context';
 import { BuildStatus, Status } from '../../src/types/BuildStatus';
@@ -15,6 +15,7 @@ Given(
       what,
       who,
       when,
+      id: '',
     });
   }
 );
@@ -31,6 +32,13 @@ Given('the friendly name mapping is:', async function (docString) {
   setFriendlyNameState(JSON.parse(docString));
 });
 
+Given('the build run had an id of {string}', async function (buildId) {
+  setId(buildId);
+  // set other values also
+  setWho('blah');
+  setWhen(new Date().toISOString());
+  setWhat(false);
+});
 // WHEN
 
 When("the build run posts it's results", async function () {
@@ -49,7 +57,13 @@ Then(
       who,
       when,
       what,
+      id: '',
     };
     deepEqual(expected, actual);
   }
 );
+
+Then('the build status has an id of {string}', async function (buildId) {
+  const status = getBuildStatus();
+  equal(status.id, buildId);
+});

@@ -5,6 +5,7 @@ export interface BuildResults {
 
 export interface Resource {
   status?: string;
+  buildNumber: string;
   requests: Request[];
 }
 

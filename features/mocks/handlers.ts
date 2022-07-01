@@ -12,6 +12,7 @@ const state: MockState = {
     who: 'dave',
     what: Status.FIXED,
     when: '2022-06-19T',
+    id: '',
   },
   friendlyNameMap: {
     Dave: 'Dave',

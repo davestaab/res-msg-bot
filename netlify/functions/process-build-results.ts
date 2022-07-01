@@ -6,10 +6,10 @@ import { getCurrentStatus, setCurrentStatus, getFriendlyNameMap } from '../pantr
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
   const content = JSON.parse(event.body ?? '') as BuildResults;
-  const { status: newStatus } = content.resource;
+  const { status: newStatus, buildNumber } = content.resource;
   const changedBy = await changedByName(content);
   const currentStatus = await getCurrentStatus();
-  const updateStatus = updateStatusFactory(changedBy, content.createdDate);
+  const updateStatus = updateStatusFactory(changedBy, content.createdDate, buildNumber);
   // compare newStatus to current status
   // case 1: do nothing if newStatus matches currentStatus
   if (
@@ -59,13 +59,14 @@ async function changedByName(content: BuildResults) {
   return nameMap[name] ?? name;
 }
 
-function updateStatusFactory(who: string, when?: string) {
+function updateStatusFactory(who: string, when?: string, id?: string) {
   if (!when) throw 'updateStatusFactory: when argument missing';
   return (what: Status): BuildStatus => {
     return {
       what,
       who,
       when,
+      id,
     };
   };
 }

@@ -4,6 +4,7 @@ import { Event } from '@netlify/functions/dist/function/event';
 const buildResults: BuildResults = {
   resource: {
     status: undefined,
+    buildNumber: '',
     requests: [
       {
         requestedFor: {
@@ -19,6 +20,7 @@ export function resetBuildResults() {
   buildResults.resource.status = undefined;
   buildResults.resource.requests[0].requestedFor.uniqueName = undefined;
   buildResults.createdDate = undefined;
+  buildResults.resource.buildNumber = '';
 }
 
 export function setWho(who: string) {
@@ -33,6 +35,9 @@ export function setWhen(when: string) {
   buildResults.createdDate = when;
 }
 
+export function setId(id: string) {
+  buildResults.resource.buildNumber = id;
+}
 export function getBuildResults() {
   return buildResults;
 }
