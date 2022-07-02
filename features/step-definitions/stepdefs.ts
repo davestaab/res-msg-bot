@@ -14,8 +14,7 @@ import { BuildStatus, Status } from '../../src/types/BuildStatus';
 import { deepEqual, equal } from 'assert';
 import { parseSimpleTime } from './parameterTypes';
 
-// GIVEN
-
+//<editor-fold desc="ǴIVENS">
 Given(
   'the build status is currently {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
@@ -62,17 +61,17 @@ Given('the current build history is:', async function (dataTable) {
   setBuildHistory(history);
   if (history.length > 0) setBuildStatus(history[history.length - 1]);
 });
+//</editor-fold>
 
-// WHEN
-
+//<editor-fold desc="ẂHENS">
 When("the build run posts it's results", async function () {
   const buildResult = getBuildResults();
   const results = await handler(createEvent(buildResult), {} as Context, () => undefined);
   equal(204, results?.statusCode ?? 0);
 });
+//</editor-fold>
 
-// THEN
-
+//<editor-fold desc="THENS">
 Then(
   'the build status is {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
@@ -99,3 +98,4 @@ Then('the build history is:', async function (dataTable) {
   }) as BuildStatus[];
   deepEqual(actual, { history });
 });
+//</editor-fold>
