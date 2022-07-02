@@ -13,32 +13,35 @@ interface MockState {
   friendlyNameMap: FriendlyNameMap;
   historyState: BuildHistory;
 }
+const initialStatus: BuildStatus = {
+  who: 'dave',
+  what: Status.BORKD,
+  when: '2022-06-19T10:00:00z',
+  id: '20220630.1',
+};
 const state: MockState = {
-  status: {
-    who: 'dave',
-    what: Status.BORKD,
-    when: '2022-06-19T10:00:00z',
-    id: '20220630.1',
-  },
-  friendlyNameMap: {
-    Dave: 'Dave',
-    Aaron: 'Aaron',
-    Shannon: 'Shannon',
-  },
+  status: { ...initialStatus },
+  friendlyNameMap: {},
   historyState: {
     history: [],
   },
 };
 
-export const setBuildStatus = (newStatus: BuildStatus) => (state.status = newStatus);
+export const setBuildStatus = (newStatus: BuildStatus) => (state.status = { ...newStatus });
 export const getBuildStatus = () => state.status;
 
 export const setFriendlyNameState = (newState: FriendlyNameMap) =>
-  (state.friendlyNameMap = newState);
+  (state.friendlyNameMap = { ...newState });
 
 export const getBuildHistory = () => state.historyState;
 export const setBuildHistory = (history: BuildStatus[]) => (state.historyState.history = history);
 export const clearBuildHistory = () => (state.historyState.history = []);
+
+export const resetMockState = () => {
+  clearBuildHistory();
+  setFriendlyNameState({});
+  setBuildStatus(initialStatus);
+};
 
 export const handlers = [
   rest.get(buildStatusBasketUrl, (req, res, ctx) => {
