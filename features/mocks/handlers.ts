@@ -18,6 +18,7 @@ const initialStatus: BuildStatus = {
   what: Status.BORKD,
   when: '2022-06-19T10:00:00z',
   id: '20220630.1',
+  count: 1,
 };
 const state: MockState = {
   status: { ...initialStatus },

@@ -3,6 +3,7 @@ export interface BuildStatus {
   who: string;
   when: string;
   id?: string;
+  count?: number;
 }
 
 export enum Status {

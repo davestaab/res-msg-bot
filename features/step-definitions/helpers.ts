@@ -38,6 +38,7 @@ export function setWhen(when: string) {
 export function setId(id: string) {
   buildResults.resource.buildNumber = id;
 }
+
 export function getBuildResults() {
   return buildResults;
 }

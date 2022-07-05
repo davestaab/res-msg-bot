@@ -16,7 +16,11 @@ const handler: Handler = async (event) => {
     (newStatusGood(newStatus) && currentStatusGood(currentStatus)) ||
     (newStatusBad(newStatus) && currentStatusBad(currentStatus))
   ) {
-    // no change in status, do nothing
+    // no change in status, increment count and save
+    await setCurrentStatus({
+      ...currentStatus,
+      count: currentStatus.count ? currentStatus.count + 1 : 2,
+    });
   } else if (currentStatusBad(currentStatus)) {
     // good news it's fixed! but is it fixed or just poop-smithed?
     if (changedBy === currentStatus.who) {
@@ -67,6 +71,7 @@ function updateStatusFactory(who: string, when?: string, id?: string) {
       who,
       when,
       id,
+      count: 1,
     };
   };
 }

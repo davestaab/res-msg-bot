@@ -11,19 +11,19 @@ Feature: Results are processed correctly
     Given the build status is currently BORKD by "Dave" at 2:00 PM
     And the build run by "Dave" at 3:06 PM was unsuccessful
     When the build run posts it's results
-    Then the build status is BORKD by "Dave" at 02:00 PM
+    Then the build status is BORKD by "Dave" at 02:00 PM with a count of 2
 
   Scenario: No update when currently fixed and tests pass
     Given the build status is currently FIXED by "Dave" at 2:00 PM
     And the build run by "Dave" at 3:06 PM was successful
     When the build run posts it's results
-    Then the build status is FIXED by "Dave" at 02:00 PM
+    Then the build status is FIXED by "Dave" at 02:00 PM with a count of 2
 
   Scenario: No update when currently poopsmithed and tests pass
     Given the build status is currently POOPSMITH by "Dave" at 2:00 PM
     And the build run by "Dave" at 3:06 PM was successful
     When the build run posts it's results
-    Then the build status is POOPSMITH by "Dave" at 02:00 PM
+    Then the build status is POOPSMITH by "Dave" at 02:00 PM with a count of 2
 
   Scenario: Change to fixed when currently broken
     Given the build status is currently BORKD by "Dave" at 2:00 PM
