@@ -54,9 +54,9 @@ Given('the build history is empty', async function () {
 
 Given('the current build history is:', async function (dataTable) {
   const history = dataTable.hashes().map((h: BuildStatus) => ({
+    id: '',
     ...h,
     when: parseSimpleTime(h.when),
-    id: h.id ? h.id : '',
   }));
   setBuildHistory(history);
   if (history.length > 0) setBuildStatus(history[history.length - 1]);
