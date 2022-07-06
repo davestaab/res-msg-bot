@@ -29,13 +29,18 @@ async function _getCurrentStatus(parseJSON = true): Promise<string | BuildStatus
   return pantryClient.basket.get(BUILD_STATUS_BASKET, { parseJSON });
 }
 
-export async function setCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
+export async function setNewCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
   await pantryClient.basket.update(BUILD_STATUS_BASKET, status);
   const buildHistory = (await pantryClient.basket.get(BUILD_HISTORY_BASKET, {
     parseJSON: true,
   })) as BuildHistory;
   buildHistory.history.push(status);
   await pantryClient.basket.update(BUILD_HISTORY_BASKET, buildHistory);
+  return status;
+}
+
+export async function updateCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
+  await pantryClient.basket.update(BUILD_STATUS_BASKET, status);
   return status;
 }
 

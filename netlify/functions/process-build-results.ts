@@ -1,7 +1,12 @@
 import { Handler } from '@netlify/functions';
 import { BuildStatus, Status } from '../../src/types/BuildStatus';
 import { BuildResults } from '../../src/types/BuildResults';
-import { getCurrentStatus, setCurrentStatus, getFriendlyNameMap } from '../pantryClient';
+import {
+  getCurrentStatus,
+  getFriendlyNameMap,
+  setNewCurrentStatus,
+  updateCurrentStatus,
+} from '../pantryClient';
 
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
@@ -17,7 +22,7 @@ const handler: Handler = async (event) => {
     (newStatusBad(newStatus) && currentStatusBad(currentStatus))
   ) {
     // no change in status, increment count and save
-    await setCurrentStatus({
+    await updateCurrentStatus({
       ...currentStatus,
       count: currentStatus.count ? currentStatus.count + 1 : 2,
     });
@@ -25,14 +30,14 @@ const handler: Handler = async (event) => {
     // good news it's fixed! but is it fixed or just poop-smithed?
     if (changedBy === currentStatus.who) {
       // just poopsmithed
-      await setCurrentStatus(updateStatus(Status.POOPSMITH));
+      await setNewCurrentStatus(updateStatus(Status.POOPSMITH));
     } else {
       // high paise!! 🙌
-      await setCurrentStatus(updateStatus(Status.FIXED));
+      await setNewCurrentStatus(updateStatus(Status.FIXED));
     }
   } else if (currentStatusGood(currentStatus)) {
     // oh boy, someone has the golden poo
-    await setCurrentStatus(updateStatus(Status.BORKD));
+    await setNewCurrentStatus(updateStatus(Status.BORKD));
   }
   return {
     statusCode: 204,
