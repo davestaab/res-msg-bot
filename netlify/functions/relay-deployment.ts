@@ -2,7 +2,7 @@ import { Handler } from '@netlify/functions';
 import fetch from 'node-fetch';
 import { POST as DiscordPost } from '../../src/types/DiscordPost';
 const emojiLookup = new Map<string, string>();
-emojiLookup.set('thorium-turkey', '🦃');
+emojiLookup.set('lead-leopard', '🐆');
 
 const handler: Handler = async (event) => {
   const msgEndpoint = process.env.BUILD_MSG_ENDPOINT ?? '';
