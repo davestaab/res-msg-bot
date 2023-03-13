@@ -1,2 +1,2 @@
 [functions."tva"]
-schedule = "15 14 * * mon-fri"
+schedule = "14 14 * * mon-fri"
