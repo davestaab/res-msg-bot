@@ -15,32 +15,30 @@ const BUILD_HISTORY_BASKET = 'res-ci-build-history';
 export const buildHistoryUrl = link(BUILD_HISTORY_BASKET);
 
 export async function getCurrentStatus() {
-  const results = await _getCurrentStatus(true);
-  if (typeof results === 'object') return results;
-  throw 'Unexpected type';
+  return _getCurrentStatus();
 }
 
 export async function getCurrentStatusAsString() {
-  const results = await _getCurrentStatus(false);
+  const results = await _getCurrentStatus();
   if (typeof results === 'string') return results;
   throw 'Unexpected type';
 }
 
-async function _getCurrentStatus(parseJSON = true): Promise<string | BuildStatus> {
-  return get(BUILD_STATUS_BASKET, { parseJSON });
+async function _getCurrentStatus(): Promise<BuildStatus> {
+  return get<BuildStatus>(BUILD_STATUS_BASKET, {});
 }
 
 export async function setNewCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
   await put(BUILD_STATUS_BASKET, status);
   const buildHistory = (await get(BUILD_HISTORY_BASKET, {
-    parseJSON: true,
+    parseJSON: ,
   })) as BuildHistory;
   buildHistory.history.push(status);
   await put(BUILD_HISTORY_BASKET, buildHistory);
   return status;
 }
 
-export async function updateCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
+ async function updateCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
   await put(BUILD_STATUS_BASKET, status);
   return status;
 }

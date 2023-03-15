@@ -1,10 +1,10 @@
 import { Handler } from '@netlify/functions';
-import { getCurrentStatusAsString } from '../pantryClient.js';
+import { getCurrentStatus } from '../pantryClient.js';
 
 const handler: Handler = async () => {
   return {
     statusCode: 200,
-    body: await getCurrentStatusAsString(),
+    body: JSON.stringify(await getCurrentStatus()),
     headers: { 'Content-Type': 'application/json' },
   };
 };
