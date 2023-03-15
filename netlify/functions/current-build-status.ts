@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { getCurrentStatusAsString } from '../pantryClient';
+import { getCurrentStatusAsString } from '../pantryClient.js';
 
 const handler: Handler = async () => {
   return {

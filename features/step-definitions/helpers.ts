@@ -1,5 +1,5 @@
-import { BuildResults } from '../../src/types/BuildResults';
-import { Event } from '@netlify/functions/dist/function/event';
+import { BuildResults } from '../../src/types/BuildResults.js';
+import { Event } from '@netlify/functions/dist/function/event.js';
 
 const buildResults: BuildResults = {
   resource: {
@@ -43,7 +43,7 @@ export function getBuildResults() {
   return buildResults;
 }
 
-export function createEvent(buildResults: BuildResults): Event {
+export function createEvent<T>(buildResults: T): Event {
   return {
     body: JSON.stringify(buildResults),
   } as Event;

@@ -1,5 +1,5 @@
-import Embed from './Embed';
-import Attachment from './Attachment';
+import Embed from './Embed.js';
+import Attachment from './Attachment.js';
 
 interface Base {
   /**

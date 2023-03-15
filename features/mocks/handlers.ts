@@ -1,12 +1,14 @@
 import { rest } from 'msw';
-import { BuildStatus, Status } from '../../src/types/BuildStatus';
+import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
+import { POST as DiscordPost } from '../../src/types/DiscordPost.js';
 import {
   buildHistoryUrl,
   buildStatusBasketUrl,
   friendlyNameMapBasketUrl,
-} from '../../netlify/pantryClient';
-import { FriendlyNameMap } from '../../src/types/FriendlyNameMap';
-import { BuildHistory } from '../../src/types/BuildHistory';
+} from '../../netlify/pantryClient.js';
+import { FriendlyNameMap } from '../../src/types/FriendlyNameMap.js';
+import { BuildHistory } from '../../src/types/BuildHistory.js';
+import { TESTING_TVA_ENDPOINT } from '../../netlify/functions/tva.js';
 
 interface MockState {
   status: BuildStatus;
@@ -48,14 +50,19 @@ export const handlers = [
   rest.get(buildStatusBasketUrl, (req, res, ctx) => {
     return res(ctx.json(state.status));
   }),
-  rest.put(buildStatusBasketUrl, (req, res, ctx) => {
-    setBuildStatus(req.body as BuildStatus);
+  rest.put(buildStatusBasketUrl, async (req, res, ctx) => {
+    setBuildStatus((await req.json()) as BuildStatus);
     return res(ctx.json(state.status));
   }),
   rest.get(friendlyNameMapBasketUrl, (req, res, ctx) => res(ctx.json(state.friendlyNameMap))),
   rest.get(buildHistoryUrl, (req, res, ctx) => res(ctx.json(state.historyState))),
-  rest.put(buildHistoryUrl, (req, res, ctx) => {
-    setBuildHistory((req.body as BuildHistory).history);
+  rest.put(buildHistoryUrl, async (req, res, ctx) => {
+    setBuildHistory(((await req.json()) as BuildHistory).history);
     return res(ctx.json(getBuildHistory()));
+  }),
+  rest.post(TESTING_TVA_ENDPOINT, async (req, res, ctx) => {
+    const msg = (await req.json()) as DiscordPost;
+    console.log(msg);
+    return res();
   }),
 ];

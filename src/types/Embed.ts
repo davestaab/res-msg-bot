@@ -1,4 +1,4 @@
-import EmbedField from './EmbedField';
+import EmbedField from './EmbedField.js';
 
 /**
  * Embed object.

@@ -1,4 +1,4 @@
-import { BuildStatus } from './BuildStatus';
+import { BuildStatus } from './BuildStatus.js';
 
 export interface BuildHistory {
   history: BuildStatus[];

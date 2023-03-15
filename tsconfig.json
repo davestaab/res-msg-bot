@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
+    "module": "node16",
+		"moduleResolution": "node16",
     "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "outDir": "dist"
   },
   "include": [
     "src/**/*.ts",
@@ -19,6 +20,6 @@
     "netlify/**/*.ts",
     "features/**/*.ts",
     ".eslintrc.js",
-    "cucumber.js"
+    "cucumber.cjs"
   ]
 }

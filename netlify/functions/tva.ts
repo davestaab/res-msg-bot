@@ -1,7 +1,7 @@
 import { Handler } from '@netlify/functions';
-import { POST as DiscordPost } from '../../src/types/DiscordPost';
+import { POST as DiscordPost } from '../../src/types/DiscordPost.js';
 import fetch from 'node-fetch';
-import format from 'date-fns/format';
+import format from 'date-fns/format/index.js';
 
 const images = [
   'https://res-msg-bot.netlify.app/images/TVA-A-01.png',
@@ -21,9 +21,9 @@ const images = [
   'https://res-msg-bot.netlify.app/images/TVA-14.jpg',
   'https://res-msg-bot.netlify.app/images/TVA-15.jpg',
 ];
-
+export const TESTING_TVA_ENDPOINT = 'https://res-test-app.com/tva-reminder';
 const handler: Handler = async () => {
-  const resEndpoint = process.env.TVA_RES_ENDPOINT ?? '';
+  const resEndpoint = process.env.TVA_RES_ENDPOINT ?? TESTING_TVA_ENDPOINT;
   const postBody: DiscordPost = {
     content: `@here ${format(new Date(), 'EEE MMM d')}`,
     embeds: [
@@ -41,7 +41,7 @@ const handler: Handler = async () => {
     ],
   };
   await fetch(resEndpoint, {
-    method: 'post',
+    method: 'POST',
     body: JSON.stringify(postBody),
     headers: { 'Content-Type': 'application/json' },
   });

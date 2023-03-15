@@ -1,12 +1,12 @@
 import { Handler } from '@netlify/functions';
-import { BuildStatus, Status } from '../../src/types/BuildStatus';
-import { BuildResults } from '../../src/types/BuildResults';
+import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
+import { BuildResults } from '../../src/types/BuildResults.js';
 import {
   getCurrentStatus,
   getFriendlyNameMap,
   setNewCurrentStatus,
   updateCurrentStatus,
-} from '../pantryClient';
+} from '../pantryClient.js';
 
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {

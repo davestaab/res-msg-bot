@@ -1,7 +1,7 @@
 module.exports = {
   default: {
-    requireModule: ['ts-node/register'],
-    require: ['features/**/*.ts'],
+    // requireModule: ['ts-node/register'],
+    import: ['dist/features/**/*.js'],
     formatOptions: {
       snippetInterface: 'async-await',
     },

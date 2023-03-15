@@ -1,7 +1,7 @@
 import { After, AfterAll, BeforeAll } from '@cucumber/cucumber';
-import { server } from '../mocks/server';
-import { resetBuildResults } from './helpers';
-import { resetMockState } from '../mocks/handlers';
+import { server } from '../mocks/server.js';
+import { resetBuildResults } from './helpers.js';
+import { resetMockState } from '../mocks/handlers.js';
 // Establish API mocking before all tests.
 BeforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 // Reset any request handlers that we may add during the tests,

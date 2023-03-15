@@ -1,17 +1,18 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pantry = require('pantry-node');
+import { BuildHistory } from '../src/types/BuildHistory.js';
+import { FriendlyNameMap } from '../src/types/FriendlyNameMap.js';
+import { BuildStatus } from '../src/types/BuildStatus.js';
+import fetch, { Response, RequestInit } from 'node-fetch';
 
-import { BuildHistory } from '../src/types/BuildHistory';
-import { FriendlyNameMap } from '../src/types/FriendlyNameMap';
-import { BuildStatus } from '../src/types/BuildStatus';
+const BASE_PATH = 'https://getpantry.cloud'
+const API_VERSION = '1'
 
-const pantryClient = new Pantry(process.env.PANTRY_ID);
+const { get, put, link } = createClient(process.env.PANTRY_ID ?? 'testing-pantry-id');
 const BUILD_STATUS_BASKET = 'res-test-build-status';
-export const buildStatusBasketUrl = pantryClient.basket.link(BUILD_STATUS_BASKET);
+export const buildStatusBasketUrl = link(BUILD_STATUS_BASKET);
 const FRIENDLY_NAME_MAP_BASKET = 'friendly-name-map';
-export const friendlyNameMapBasketUrl = pantryClient.basket.link(FRIENDLY_NAME_MAP_BASKET);
+export const friendlyNameMapBasketUrl = link(FRIENDLY_NAME_MAP_BASKET);
 const BUILD_HISTORY_BASKET = 'res-ci-build-history';
-export const buildHistoryUrl = pantryClient.basket.link(BUILD_HISTORY_BASKET);
+export const buildHistoryUrl = link(BUILD_HISTORY_BASKET);
 
 export async function getCurrentStatus() {
   const results = await _getCurrentStatus(true);
@@ -26,24 +27,70 @@ export async function getCurrentStatusAsString() {
 }
 
 async function _getCurrentStatus(parseJSON = true): Promise<string | BuildStatus> {
-  return pantryClient.basket.get(BUILD_STATUS_BASKET, { parseJSON });
+  return get(BUILD_STATUS_BASKET, { parseJSON });
 }
 
 export async function setNewCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
-  await pantryClient.basket.update(BUILD_STATUS_BASKET, status);
-  const buildHistory = (await pantryClient.basket.get(BUILD_HISTORY_BASKET, {
+  await put(BUILD_STATUS_BASKET, status);
+  const buildHistory = (await get(BUILD_HISTORY_BASKET, {
     parseJSON: true,
   })) as BuildHistory;
   buildHistory.history.push(status);
-  await pantryClient.basket.update(BUILD_HISTORY_BASKET, buildHistory);
+  await put(BUILD_HISTORY_BASKET, buildHistory);
   return status;
 }
 
 export async function updateCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
-  await pantryClient.basket.update(BUILD_STATUS_BASKET, status);
+  await put(BUILD_STATUS_BASKET, status);
   return status;
 }
 
 export async function getFriendlyNameMap(): Promise<FriendlyNameMap> {
-  return await pantryClient.basket.get(FRIENDLY_NAME_MAP_BASKET, { parseJSON: true });
+  return await get(FRIENDLY_NAME_MAP_BASKET, { parseJSON: true });
+}
+
+function createClient(id: string) {
+  return {
+    async get<T>(basket: string, options: any) {
+      return unwrapFetch<T>(fetch(path(id, basket)))
+    },
+    async put<P, R>(basket: string, payload: P) {
+      return unwrapFetch<R>(fetch(path(id, basket), {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }));
+    },
+    link(basket: string): string {
+      return path(id, basket);
+    }
+  }
+
+}
+
+function path(pantryId: string, basket: string) {
+  return `${BASE_PATH}/apiv${API_VERSION}/pantry/${pantryId}/basket/${basket}`
+}
+
+function unwrapFetch<R>(response: Promise<Response>) {
+  return response.then(checkStatus).then(r => r.json()).then(r => r as R);
+}
+// https://www.npmjs.com/package/node-fetch#handling-exceptions
+class HTTPResponseError extends Error {
+  response: Response;
+  constructor(response: Response) {
+    super(`HTTP Error Response: ${response.status} ${response.statusText}`);
+    this.response = response;
+  }
+}
+
+function checkStatus(response: Response) {
+  if (response.ok) {
+    // response.status >= 200 && response.status < 300
+    return response;
+  } else {
+    throw new HTTPResponseError(response);
+  }
 }

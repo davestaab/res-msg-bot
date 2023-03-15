@@ -1,6 +1,6 @@
 import { Handler } from '@netlify/functions';
 import fetch from 'node-fetch';
-import { POST as DiscordPost } from '../../src/types/DiscordPost';
+import { POST as DiscordPost } from '../../src/types/DiscordPost.js';
 const emojiLookup = new Map<string, string>();
 emojiLookup.set('lead-leopard', '🐆');
 

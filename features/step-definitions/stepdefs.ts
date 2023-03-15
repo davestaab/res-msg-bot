@@ -6,13 +6,15 @@ import {
   setBuildHistory,
   setBuildStatus,
   setFriendlyNameState,
-} from '../mocks/handlers';
-import { setWho, setWhat, setWhen, getBuildResults, createEvent, setId } from './helpers';
-import { handler } from '../../netlify/functions/process-build-results';
-import { Context } from '@netlify/functions/dist/function/context';
-import { BuildStatus, Status } from '../../src/types/BuildStatus';
+} from '../mocks/handlers.js';
+import { setWho, setWhat, setWhen, getBuildResults, createEvent, setId } from './helpers.js';
+import { handler } from '../../netlify/functions/process-build-results.js';
+import { handler as tvaHandler } from '../../netlify/functions/tva.js';
+import { Context } from '@netlify/functions/dist/function/context.js';
+import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
 import { deepEqual, equal } from 'assert';
-import { parseSimpleTime } from './parameterTypes';
+import { parseSimpleTime } from './parameterTypes.js';
+import { Event } from '@netlify/functions/dist/function/event.js';
 
 //<editor-fold desc="ǴIVENS">
 Given(
@@ -20,13 +22,13 @@ Given(
   async function (what: Status, who, when) {
     setBuildStatus({
       what,
-      who,
       when,
+      who,
       id: '',
       count: 1,
     });
   }
-);
+  );
 
 Given(
   'the build run by {string} at {simpleTime} was {buildResult}',
@@ -131,3 +133,12 @@ Then(
 );
 
 //</editor-fold>
+
+When('a time reminder is requested', function () {
+  tvaHandler({} as Event, {} as Context, () => undefined);
+
+});
+Then('a time reminder is sent', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
