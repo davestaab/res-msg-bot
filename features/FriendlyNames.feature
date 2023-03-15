@@ -7,21 +7,21 @@ Feature: Users unique names are translated to a friendly name
     Given the friendly name mapping is:
     """
     {
-      "ORNL\\\\i47": "Dave",
-      "staabdr@ornl.gov": "Dave",
-      "ORNL\\\\8pt": "Shannon"
+      "CMPY\\\\dvy": "Dave",
+      "staabdr@cmpy.com": "Dave",
+      "CMPY\\\\tnr": "Shannon"
     }
     """
 
   Scenario: Unique Names are mapped to friendly names
     Given the build status is currently BORKD by "Aaron" at 2:00 PM
-    And the build run by "ORNL\\i47" at 3:06 PM was successful
+    And the build run by "CMPY\\dvy" at 3:06 PM was successful
     When the build run posts it's results
     Then the build status is FIXED by "Dave" at 3:06 PM
 
   Scenario: Multiple unique names can be mapped
     Given the build status is currently BORKD by "Aaron" at 2:00 PM
-    And the build run by "staabdr@ornl.gov" at 3:06 PM was successful
+    And the build run by "staabdr@cmpy.com" at 3:06 PM was successful
     When the build run posts it's results
     Then the build status is FIXED by "Dave" at 3:06 PM
 
