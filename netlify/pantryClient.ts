@@ -25,31 +25,29 @@ export async function getCurrentStatusAsString() {
 }
 
 async function _getCurrentStatus(): Promise<BuildStatus> {
-  return get<BuildStatus>(BUILD_STATUS_BASKET, {});
+  return get<BuildStatus>(BUILD_STATUS_BASKET);
 }
 
 export async function setNewCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
   await put(BUILD_STATUS_BASKET, status);
-  const buildHistory = (await get(BUILD_HISTORY_BASKET, {
-    parseJSON: ,
-  })) as BuildHistory;
+  const buildHistory = (await get(BUILD_HISTORY_BASKET)) as BuildHistory;
   buildHistory.history.push(status);
   await put(BUILD_HISTORY_BASKET, buildHistory);
   return status;
 }
 
- async function updateCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
+ export async function updateCurrentStatus(status: BuildStatus): Promise<BuildStatus> {
   await put(BUILD_STATUS_BASKET, status);
   return status;
 }
 
 export async function getFriendlyNameMap(): Promise<FriendlyNameMap> {
-  return await get(FRIENDLY_NAME_MAP_BASKET, { parseJSON: true });
+  return await get(FRIENDLY_NAME_MAP_BASKET);
 }
 
 function createClient(id: string) {
   return {
-    async get<T>(basket: string, options: any) {
+    async get<T>(basket: string) {
       return unwrapFetch<T>(fetch(path(id, basket)))
     },
     async put<P, R>(basket: string, payload: P) {
