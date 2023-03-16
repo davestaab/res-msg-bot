@@ -21,9 +21,9 @@ const images = [
   'https://res-msg-bot.netlify.app/images/TVA-14.jpg',
   'https://res-msg-bot.netlify.app/images/TVA-15.jpg',
 ];
-export const TESTING_TVA_ENDPOINT = 'https://res-test-app.com/tva-reminder';
+export const tvaEndpoint = () => process.env.TVA_RES_ENDPOINT ?? 'https://res-test-app.com/tva-reminder';
 const handler: Handler = async () => {
-  const resEndpoint = process.env.TVA_RES_ENDPOINT ?? TESTING_TVA_ENDPOINT;
+  const resEndpoint = tvaEndpoint();
   const postBody: DiscordPost = {
     content: `@here ${format(new Date(), 'EEE MMM d')}`,
     embeds: [

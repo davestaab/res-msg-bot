@@ -8,7 +8,7 @@ import {
 } from '../../netlify/botClient.js';
 import { FriendlyNameMap } from '../../src/types/FriendlyNameMap.js';
 import { BuildHistory } from '../../src/types/BuildHistory.js';
-import { TESTING_TVA_ENDPOINT } from '../../netlify/functions/tva.js';
+import { tvaEndpoint } from '../../netlify/functions/tva.js';
 
 interface MockState {
   status: BuildStatus;
@@ -64,7 +64,7 @@ export const handlers = [
     setBuildHistory(((await req.json()) as BuildHistory).history);
     return res(ctx.json(getBuildHistory()));
   }),
-  rest.post(TESTING_TVA_ENDPOINT, async (req, res, ctx) => {
+  rest.post(tvaEndpoint(), async (req, res, ctx) => {
     const msg = (await req.json()) as DiscordPost;
     state.tvaReminder = msg;
     return res();
