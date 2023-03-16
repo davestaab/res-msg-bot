@@ -30,14 +30,14 @@ const handler: Handler = async (event) => {
     // good news it's fixed! but is it fixed or just poop-smithed?
     if (changedBy === currentStatus.who) {
       // just poopsmithed
-      await setNewCurrentStatus(updateStatus(Status.POOPSMITH));
+      await setNewCurrentStatus(updateStatus(Status.POOPSMITH), currentStatus);
     } else {
       // high paise!! 🙌
-      await setNewCurrentStatus(updateStatus(Status.FIXED));
+      await setNewCurrentStatus(updateStatus(Status.FIXED), currentStatus);
     }
   } else if (currentStatusGood(currentStatus)) {
     // oh boy, someone has the golden poo
-    await setNewCurrentStatus(updateStatus(Status.BORKD));
+    await setNewCurrentStatus(updateStatus(Status.BORKD), currentStatus);
   }
   return {
     statusCode: 204,

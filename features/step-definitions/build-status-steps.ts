@@ -9,10 +9,9 @@ import {
 } from '../mocks/handlers.js';
 import { setWho, setWhat, setWhen, getBuildResults, createEvent, setId } from './helpers.js';
 import { handler } from '../../netlify/functions/process-build-results.js';
-import { handler as tvaHandler } from '../../netlify/functions/tva.js';
 import { Context } from '@netlify/functions/dist/function/context.js';
 import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
-import { deepEqual, equal, notEqual } from 'assert';
+import { deepEqual, equal } from 'assert';
 import { parseSimpleTime } from './parameterTypes.js';
 
 Given(
@@ -24,6 +23,18 @@ Given(
       who,
       id: '',
       count: 1,
+    });
+  }
+);
+Given(
+  'the build status is currently {buildStatus} by {string} at {simpleTime} with count {int}',
+  async function (what: Status, who, when, count) {
+    setBuildStatus({
+      what,
+      when,
+      who,
+      id: '',
+      count,
     });
   }
 );

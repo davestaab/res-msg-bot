@@ -61,7 +61,12 @@ export const handlers = [
   rest.get(friendlyNameMapBasketUrl, (req, res, ctx) => res(ctx.json(state.friendlyNameMap))),
   rest.get(buildHistoryUrl, (req, res, ctx) => res(ctx.json(state.historyState))),
   rest.put(buildHistoryUrl, async (req, res, ctx) => {
-    setBuildHistory(((await req.json()) as BuildHistory).history);
+    const currentHistory = getBuildHistory();
+    const update = (await req.json()) as BuildHistory;
+    setBuildHistory([
+      ...currentHistory.history,
+      ...update.history,
+    ]);
     return res(ctx.json(getBuildHistory()));
   }),
   rest.post(tvaEndpoint(), async (req, res, ctx) => {
