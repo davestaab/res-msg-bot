@@ -11,24 +11,24 @@ When('a time reminder is requested', async function () {
   equal(204, results?.statusCode ?? 0);
 
 });
-Then('the time reminder has content', async function () {
+Then('the time reminder should have content', async function () {
   const reminder = getTvaReminderState();
   notEqual(reminder, null);
   equal(`@here ${format(new Date(), 'EEE MMM d')}`, reminder?.content);
 });
-Then('the time reminder embed title is {string}', async function (string) {
+Then('the time reminder embed title should be {string}', async function (string) {
   const reminder = getTvaReminderState();
   notEqual(reminder, null);
   equal(1, reminder?.embeds.length)
   equal("Don't forget....", reminder?.embeds[0].title)
 });
-Then('the time reminder embed description is:', async function (docString) {
+Then('the time reminder embed description should be:', async function (docString) {
   const reminder = getTvaReminderState();
   notEqual(reminder, null);
   equal(1, reminder?.embeds.length)
   equal(docString, reminder?.embeds[0].description);
 });
-Then('the time reminder embed has an image', async function () {
+Then('the time reminder embed should have an image', async function () {
   const reminder = getTvaReminderState();
   notEqual(reminder, null);
   equal(1, reminder?.embeds.length)

@@ -5,12 +5,12 @@ Feature: A Reminder to submit time is posted to
 
   Scenario: A message is sent
     When a time reminder is requested
-    Then the time reminder has content
-    And the time reminder embed title is "Don't forget...."
-    And the time reminder embed description is:
+    Then the time reminder should have content
+    And the time reminder embed title should be "Don't forget...."
+    And the time reminder embed description should be:
     """
     Just a friendly reminder from the Time Variance Authority: Avoid a nexus event and enter your time! We can all do our part to protect and preserve the Sacred Timeline.
     
     -- The Time-Keepers
     """
-    And the time reminder embed has an image
+    And the time reminder embed should have an image

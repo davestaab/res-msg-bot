@@ -27,7 +27,7 @@ Given(
   }
 );
 Given(
-  'the build status is currently {buildStatus} by {string} at {simpleTime} with count {int}',
+  'the build status is currently {buildStatus} by {string} at {simpleTime} with a count of {int}',
   async function (what: Status, who, when, count) {
     setBuildStatus({
       what,
@@ -95,7 +95,7 @@ When("the build run posts it's results", async function () {
 });
 
 Then(
-  'the build status is {buildStatus} by {string} at {simpleTime}',
+  'the build status should be {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
     const actual = getBuildStatus();
     const expected: BuildStatus = {
@@ -109,12 +109,12 @@ Then(
   }
 );
 
-Then('the build status has an id of {string}', async function (buildId) {
+Then('the build status should have an id of {string}', async function (buildId) {
   const status = getBuildStatus();
   equal(status.id, buildId);
 });
 
-Then('the build history is:', async function (dataTable) {
+Then('the build history should be:', async function (dataTable) {
   const actual = getBuildHistory();
   const history = dataTable.hashes().map((h: BuildStatus) => {
     return { id: '', ...h, when: parseSimpleTime(h.when) } as BuildStatus;
@@ -123,7 +123,7 @@ Then('the build history is:', async function (dataTable) {
 });
 
 Then(
-  'the build status is {buildStatus} by {string} at {simpleTime} with a count of {int}',
+  'the build status should be {buildStatus} by {string} at {simpleTime} with a count of {int}',
   async function (what, who, when, count) {
     const actual = getBuildStatus();
     deepEqual(actual, {
