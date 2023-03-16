@@ -23,14 +23,14 @@ interface Content {
    * Message contents.
    * Max 2000 characters
    */
-  content: string;
+  content?: string;
 }
 
 interface File {
   /**
    * Contents of a file being sent.
    */
-  file: Attachment | string;
+  file?: Attachment | string;
 }
 
 interface Embeds {
@@ -45,4 +45,4 @@ interface Embeds {
  *
  * @link https://discordapp.com/developers/docs/resources/webhook#execute-webhook
  */
-export type POST = (Base & Content) | File | Embeds;
+export type POST = Base & Content & File & Embeds;

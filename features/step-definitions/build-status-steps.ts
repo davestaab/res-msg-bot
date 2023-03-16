@@ -12,11 +12,9 @@ import { handler } from '../../netlify/functions/process-build-results.js';
 import { handler as tvaHandler } from '../../netlify/functions/tva.js';
 import { Context } from '@netlify/functions/dist/function/context.js';
 import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
-import { deepEqual, equal } from 'assert';
+import { deepEqual, equal, notEqual } from 'assert';
 import { parseSimpleTime } from './parameterTypes.js';
-import { Event } from '@netlify/functions/dist/function/event.js';
 
-//<editor-fold desc="ǴIVENS">
 Given(
   'the build status is currently {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
@@ -28,7 +26,7 @@ Given(
       count: 1,
     });
   }
-  );
+);
 
 Given(
   'the build run by {string} at {simpleTime} was {buildResult}',
@@ -79,17 +77,12 @@ Given('the build status count is undefined', async function () {
   });
 });
 
-//</editor-fold>
-
-//<editor-fold desc="ẂHENS">
 When("the build run posts it's results", async function () {
   const buildResult = getBuildResults();
   const results = await handler(createEvent(buildResult), {} as Context, () => undefined);
   equal(204, results?.statusCode ?? 0);
 });
-//</editor-fold>
 
-//<editor-fold desc="THENS">
 Then(
   'the build status is {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
@@ -131,14 +124,3 @@ Then(
     });
   }
 );
-
-//</editor-fold>
-
-When('a time reminder is requested', function () {
-  tvaHandler({} as Event, {} as Context, () => undefined);
-
-});
-Then('a time reminder is sent', async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending';
-});

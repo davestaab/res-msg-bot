@@ -5,7 +5,7 @@ import {
   buildHistoryUrl,
   buildStatusBasketUrl,
   friendlyNameMapBasketUrl,
-} from '../../netlify/pantryClient.js';
+} from '../../netlify/botClient.js';
 import { FriendlyNameMap } from '../../src/types/FriendlyNameMap.js';
 import { BuildHistory } from '../../src/types/BuildHistory.js';
 import { TESTING_TVA_ENDPOINT } from '../../netlify/functions/tva.js';
@@ -14,6 +14,7 @@ interface MockState {
   status: BuildStatus;
   friendlyNameMap: FriendlyNameMap;
   historyState: BuildHistory;
+  tvaReminder: DiscordPost | null;
 }
 const initialStatus: BuildStatus = {
   who: 'dave',
@@ -28,6 +29,7 @@ const state: MockState = {
   historyState: {
     history: [],
   },
+  tvaReminder: null
 };
 
 export const setBuildStatus = (newStatus: BuildStatus) => (state.status = { ...newStatus });
@@ -39,6 +41,8 @@ export const setFriendlyNameState = (newState: FriendlyNameMap) =>
 export const getBuildHistory = () => state.historyState;
 export const setBuildHistory = (history: BuildStatus[]) => (state.historyState.history = history);
 export const clearBuildHistory = () => (state.historyState.history = []);
+
+export const getTvaReminderState = () => state.tvaReminder
 
 export const resetMockState = () => {
   clearBuildHistory();
@@ -62,7 +66,7 @@ export const handlers = [
   }),
   rest.post(TESTING_TVA_ENDPOINT, async (req, res, ctx) => {
     const msg = (await req.json()) as DiscordPost;
-    console.log(msg);
+    state.tvaReminder = msg;
     return res();
   }),
 ];

@@ -6,7 +6,7 @@ import {
   getFriendlyNameMap,
   setNewCurrentStatus,
   updateCurrentStatus,
-} from '../pantryClient.js';
+} from '../botClient.js';
 
 const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
