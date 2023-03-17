@@ -1,4 +1,4 @@
-import { Given, When, Then } from '@cucumber/cucumber';
+import { When, Then } from '@cucumber/cucumber';
 import { Context } from '@netlify/functions/dist/function/context.js';
 import { Event } from '@netlify/functions/dist/function/event.js';
 import { equal, notEqual } from 'assert';
@@ -16,11 +16,11 @@ Then('the time reminder should have content', async function () {
   notEqual(reminder, null);
   equal(`@here ${format(new Date(), 'EEE MMM d')}`, reminder?.content);
 });
-Then('the time reminder embed title should be {string}', async function (string) {
+Then('the time reminder embed title should be {string}', async function (title) {
   const reminder = getTvaReminderState();
   notEqual(reminder, null);
   equal(1, reminder?.embeds.length)
-  equal("Don't forget....", reminder?.embeds[0].title)
+  equal(title, reminder?.embeds[0].title)
 });
 Then('the time reminder embed description should be:', async function (docString) {
   const reminder = getTvaReminderState();
