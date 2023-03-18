@@ -1,23 +1,16 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import {
-  clearBuildHistory,
-  getBuildHistory,
-  getBuildStatus,
-  setBuildHistory,
-  setBuildStatus,
-  setFriendlyNameState,
-} from '../mocks/handlers.js';
-import { setWho, setWhat, setWhen, getBuildResults, createEvent, setId } from './helpers.js';
 import { handler } from '../../netlify/functions/process-build-results.js';
 import { Context } from '@netlify/functions/dist/function/context.js';
 import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
 import { deepEqual, equal } from 'assert';
 import { parseSimpleTime } from './parameterTypes.js';
+import { Event } from '@netlify/functions/dist/function/event.js';
+import { getBuildHistoryState, getBuildMsg, getBuildStatusState, setBuildHistoryState, setBuildStatusState, setFriendlyNameState, setId, setWhat, setWhen, setWho } from './world.js';
 
 Given(
   'the build status is currently {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
-    setBuildStatus({
+    setBuildStatusState({
       what,
       when,
       who,
@@ -29,7 +22,7 @@ Given(
 Given(
   'the build status is currently {buildStatus} by {string} at {simpleTime} with a count of {int}',
   async function (what: Status, who, when, count) {
-    setBuildStatus({
+    setBuildStatusState({
       what,
       when,
       who,
@@ -61,7 +54,7 @@ Given('the build run had an id of {string}', async function (buildId) {
 });
 
 Given('the build history is empty', async function () {
-  clearBuildHistory();
+  setBuildHistoryState([])
 });
 
 Given('the current build history is:', async function (dataTable) {
@@ -70,26 +63,26 @@ Given('the current build history is:', async function (dataTable) {
     ...h,
     when: parseSimpleTime(h.when),
   }));
-  setBuildHistory(history);
-  if (history.length > 0) setBuildStatus(history[history.length - 1]);
+  setBuildHistoryState(history);
+  if (history.length > 0) setBuildStatusState(history[history.length - 1]);
 });
 
 Given('the build status has a count of {int}', async function (count) {
-  setBuildStatus({
-    ...getBuildStatus(),
+  setBuildStatusState({
+    ...getBuildStatusState(),
     count,
   });
 });
 
 Given('the build status count is undefined', async function () {
-  setBuildStatus({
-    ...getBuildStatus(),
+  setBuildStatusState({
+    ...getBuildStatusState(),
     count: undefined,
   });
 });
 
 When("the build run posts it's results", async function () {
-  const buildResult = getBuildResults();
+  const buildResult = getBuildMsg();
   const results = await handler(createEvent(buildResult), {} as Context, () => undefined);
   equal(204, results?.statusCode ?? 0);
 });
@@ -97,7 +90,7 @@ When("the build run posts it's results", async function () {
 Then(
   'the build status should be {buildStatus} by {string} at {simpleTime}',
   async function (what: Status, who, when) {
-    const actual = getBuildStatus();
+    const actual = getBuildStatusState();
     const expected: BuildStatus = {
       who,
       when,
@@ -105,17 +98,17 @@ Then(
       id: '',
       count: 1,
     };
-    deepEqual(expected, actual);
+    deepEqual(actual, expected);
   }
 );
 
 Then('the build status should have an id of {string}', async function (buildId) {
-  const status = getBuildStatus();
+  const status = getBuildStatusState();
   equal(status.id, buildId);
 });
 
 Then('the build history should be:', async function (dataTable) {
-  const actual = getBuildHistory();
+  const actual = getBuildHistoryState();
   const history = dataTable.hashes().map((h: BuildStatus) => {
     return { id: '', ...h, when: parseSimpleTime(h.when) } as BuildStatus;
   }) as BuildStatus[];
@@ -125,7 +118,7 @@ Then('the build history should be:', async function (dataTable) {
 Then(
   'the build status should be {buildStatus} by {string} at {simpleTime} with a count of {int}',
   async function (what, who, when, count) {
-    const actual = getBuildStatus();
+    const actual = getBuildStatusState();
     deepEqual(actual, {
       id: '',
       who,
@@ -135,3 +128,9 @@ Then(
     });
   }
 );
+
+function createEvent<T>(buildResults: T): Event {
+  return {
+    body: JSON.stringify(buildResults),
+  } as Event;
+}
