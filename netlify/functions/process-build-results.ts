@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
+import { BuildStatus, ScenarioBranch, Status } from '../../src/types/BuildStatus.js';
 import { BuildResults } from '../../src/types/BuildResults.js';
 import {
   getCurrentStatus,
@@ -12,9 +12,12 @@ const succeededStatus = 'succeeded';
 const handler: Handler = async (event) => {
   const content = JSON.parse(event.body ?? '') as BuildResults;
   const { status: newStatus, buildNumber } = content.resource;
+  debugger;
   const changedBy = await changedByName(content);
-  const currentStatus = await getCurrentStatus();
-  const updateStatus = updateStatusFactory(changedBy, content.createdDate, buildNumber);
+  const getVersion = content.resource.sourceGetVersion;
+  const [_, branch, _commit] = getVersion.split(':');
+  const currentStatus = await getCurrentStatus(branchName(branch));
+  const updateStatus = updateStatusFactory(changedBy, branchName(branch), content.createdDate, buildNumber);
   // compare newStatus to current status
   // case 1: do nothing if newStatus matches currentStatus
   if (
@@ -68,7 +71,7 @@ async function changedByName(content: BuildResults) {
   return nameMap[name] ?? name;
 }
 
-function updateStatusFactory(who: string, when?: string, id?: string) {
+function updateStatusFactory(who: string, branch: ScenarioBranch, when?: string, id?: string) {
   if (!when) throw 'updateStatusFactory: when argument missing';
   return (what: Status): BuildStatus => {
     return {
@@ -77,6 +80,16 @@ function updateStatusFactory(who: string, when?: string, id?: string) {
       when,
       id,
       count: 1,
+      branch
     };
   };
+}
+/**
+ * 
+ * @param branch 
+ * @returns 
+ */
+function branchName(branch: string): ScenarioBranch {
+  const parts = branch.split('/');
+  return [parts[parts.length - 2], parts[parts.length-1]].join('/') as ScenarioBranch;
 }

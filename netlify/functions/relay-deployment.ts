@@ -65,7 +65,7 @@ const handler: Handler = async (event) => {
 
 export { handler };
 
-function duration(startStr: string, finishStr: string): string {
+function  duration(startStr: string, finishStr: string): string {
   const start = Date.parse(startStr);
   const finish = Date.parse(finishStr);
   const totalSeconds = (finish - start) / 1000;

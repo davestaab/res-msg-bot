@@ -3,6 +3,7 @@ import { FriendlyNameMap } from '../src/types/FriendlyNameMap.js';
 import { BuildStatus } from '../src/types/BuildStatus.js';
 import { pantry } from './pantryClient.js';
 import { Response } from 'node-fetch';
+import { BuildStatusMap } from '../features/step-definitions/world.js';
 
 const { get, put, link } = pantry(process.env.PANTRY_ID ?? 'testing-pantry-id');
 const BUILD_STATUS_BASKET = 'res-test-build-status';
@@ -12,22 +13,27 @@ export const friendlyNameMapBasketUrl = link(FRIENDLY_NAME_MAP_BASKET);
 const BUILD_HISTORY_BASKET = 'res-ci-build-history';
 export const buildHistoryUrl = link(BUILD_HISTORY_BASKET);
 
-export async function getCurrentStatus() {
-  return unwrapFetch<BuildStatus>(get(BUILD_STATUS_BASKET));
+export async function getCurrentStatus(branch: string) {
+  const statusMap = await unwrapFetch<BuildStatusMap>(get(BUILD_STATUS_BASKET));
+  return statusMap[branch];
 }
 
-export async function setNewCurrentStatus(newStatus: BuildStatus, currentStatus: BuildStatus ) {
-  await checkStatus(put(BUILD_STATUS_BASKET, newStatus));
-  const buildHistory: BuildHistory = {
-    history: [currentStatus]
-  };
+export async function getCurrentStatusMap() {
+  return await unwrapFetch<BuildStatusMap>(get(BUILD_STATUS_BASKET));
+}
+
+export async function setNewCurrentStatus(newStatus: BuildStatus, _currentStatus: BuildStatus) {
+  await checkStatus(put(BUILD_STATUS_BASKET, { [newStatus.branch]: newStatus }));
+  // const buildHistory: BuildHistory = {
+  //   history: [currentStatus]
+  // };
   // https://documenter.getpostman.com/view/3281832/SzmZeMLC#f1c2c2b2-63d3-42f6-b30d-94b08ed68ca9
   // put will update existing content and append values to nested arrays
-  await checkStatus(put(BUILD_HISTORY_BASKET, buildHistory));
+  // await checkStatus(put(BUILD_HISTORY_BASKET, buildHistory));
 }
 
- export async function updateCurrentStatus(status: BuildStatus) {
-  await checkStatus(put(BUILD_STATUS_BASKET, status));
+export async function updateCurrentStatus(status: BuildStatus) {
+  await checkStatus(put(BUILD_STATUS_BASKET, { [status.branch]: status }));
   return status;
 }
 
@@ -49,7 +55,7 @@ class HTTPResponseError extends Error {
 }
 
 async function checkStatus(p: Promise<Response>) {
-  const response = await p; 
+  const response = await p;
   if (response.ok) {
     // response.status >= 200 && response.status < 300
     return response;
