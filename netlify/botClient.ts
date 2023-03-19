@@ -1,9 +1,8 @@
-import { BuildHistory } from '../src/types/BuildHistory.js';
 import { FriendlyNameMap } from '../src/types/FriendlyNameMap.js';
 import { BuildStatus } from '../src/types/BuildStatus.js';
 import { pantry } from './pantryClient.js';
 import { Response } from 'node-fetch';
-import { BuildStatusMap } from '../features/step-definitions/world.js';
+import { BuildStatusMap } from '../src/types/BuildStatusMap.js';
 
 const { get, put, link } = pantry(process.env.PANTRY_ID ?? 'testing-pantry-id');
 const BUILD_STATUS_BASKET = 'res-test-build-status';
@@ -13,16 +12,16 @@ export const friendlyNameMapBasketUrl = link(FRIENDLY_NAME_MAP_BASKET);
 const BUILD_HISTORY_BASKET = 'res-ci-build-history';
 export const buildHistoryUrl = link(BUILD_HISTORY_BASKET);
 
-export async function getCurrentStatus(branch: string) {
+export async function getCurrentStatus(branch: string): Promise<BuildStatus | null> {
   const statusMap = await unwrapFetch<BuildStatusMap>(get(BUILD_STATUS_BASKET));
-  return statusMap[branch];
+  return statusMap[branch] ?? null;
 }
 
 export async function getCurrentStatusMap() {
   return await unwrapFetch<BuildStatusMap>(get(BUILD_STATUS_BASKET));
 }
 
-export async function setNewCurrentStatus(newStatus: BuildStatus, _currentStatus: BuildStatus) {
+export async function setNewCurrentStatus(newStatus: BuildStatus, currentStatus: BuildStatus | null) {
   await checkStatus(put(BUILD_STATUS_BASKET, { [newStatus.branch]: newStatus }));
   // const buildHistory: BuildHistory = {
   //   history: [currentStatus]

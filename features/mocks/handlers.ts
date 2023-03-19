@@ -7,7 +7,8 @@ import {
 } from '../../netlify/botClient.js';
 import { BuildHistory } from '../../src/types/BuildHistory.js';
 import { tvaEndpoint } from '../../netlify/functions/tva.js';
-import { BuildStatusMap, getBuildHistoryState, getBuildStatusStateAllBranches, getFriendlyNameState, setBuildHistoryState, setTvaReminderState, updateBuildStatusMapState } from '../step-definitions/world.js';
+import { getBuildHistoryState, getBuildStatusStateAllBranches, getFriendlyNameState, setBuildHistoryState, setTvaReminderState, updateBuildStatusMapState } from '../step-definitions/world.js';
+import { BuildStatusMap } from '../../src/types/BuildStatusMap.js';
 
 export const handlers = [
   rest.get(buildStatusBasketUrl, (req, res, ctx) => {

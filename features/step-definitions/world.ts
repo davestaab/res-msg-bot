@@ -6,10 +6,11 @@
 import { BuildHistory } from "../../src/types/BuildHistory.js";
 import { BuildResults } from "../../src/types/BuildResults.js";
 import { BuildStatus, Status } from "../../src/types/BuildStatus.js";
+import { BuildStatusMap } from "../../src/types/BuildStatusMap.js";
 import { POST } from "../../src/types/DiscordPost.js";
 import { FriendlyNameMap } from "../../src/types/FriendlyNameMap.js";
 
-export type BuildStatusMap = Record<string, BuildStatus>;
+
 
 interface MockState {
   status: BuildStatusMap;
@@ -59,6 +60,7 @@ const state: MockState = {
 
 
 export const updateBuildStatusMapState = (newStatus: BuildStatusMap) => (state.status = { ...state.status, ...newStatus });
+export const clearBuildStatusMapState = () => (state.status = {});
 export const setBuildStatusState = (newStatus: BuildStatus) => (state.status[newStatus.branch] = { ...newStatus });
 export const getBuildStatusState = (branch: string) => state.status[branch];
 export const getBuildStatusStateAllBranches = () => state.status;

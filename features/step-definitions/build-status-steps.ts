@@ -5,7 +5,7 @@ import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
 import { deepEqual, equal } from 'assert';
 import { parseSimpleTime } from './parameterTypes.js';
 import { Event } from '@netlify/functions/dist/function/event.js';
-import { getBuildHistoryState, getBuildMsg, getBuildStatusState, setbranch, setBuildHistoryState, setBuildStatusState, setFriendlyNameState, setId, setWhat, setWhen, setWho } from './world.js';
+import { clearBuildStatusMapState, getBuildHistoryState, getBuildMsg, getBuildStatusState, getBuildStatusStateAllBranches, setbranch, setBuildHistoryState, setBuildStatusState, setFriendlyNameState, setId, setWhat, setWhen, setWho } from './world.js';
 
 Given(
   'the build status is currently {buildStatus} by {string} at {simpleTime} for branch {string}',
@@ -78,6 +78,10 @@ Given('the build status count is undefined for branch {string}', async function 
   });
 });
 
+Given('no build statuses exist', function () {
+  clearBuildStatusMapState();
+});
+
 When("the build run posts it's results", async function () {
   const buildResult = getBuildMsg();
   debugger;
@@ -128,6 +132,15 @@ Then(
     });
   }
 );
+
+Then('the build status map is:', function (dataTable) {
+  const actual = getBuildStatusStateAllBranches();
+  const expected = dataTable.hashes().reduce((result: Record<string, BuildStatus>, h: BuildStatus) => {
+    result[h.branch] = { id: '', ...h, when: parseSimpleTime(h.when) };
+    return result;  
+  }, {});
+  deepEqual(actual, expected);
+});
 
 function createEvent<T>(buildResults: T): Event {
   return {

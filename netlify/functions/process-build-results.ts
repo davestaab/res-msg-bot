@@ -18,29 +18,35 @@ const handler: Handler = async (event) => {
   const [_, branch, _commit] = getVersion.split(':');
   const currentStatus = await getCurrentStatus(branchName(branch));
   const updateStatus = updateStatusFactory(changedBy, branchName(branch), content.createdDate, buildNumber);
-  // compare newStatus to current status
-  // case 1: do nothing if newStatus matches currentStatus
-  if (
-    (newStatusGood(newStatus) && currentStatusGood(currentStatus)) ||
-    (newStatusBad(newStatus) && currentStatusBad(currentStatus))
-  ) {
-    // no change in status, increment count and save
-    await updateCurrentStatus({
-      ...currentStatus,
-      count: currentStatus.count ? currentStatus.count + 1 : 2,
-    });
-  } else if (currentStatusBad(currentStatus)) {
-    // good news it's fixed! but is it fixed or just poop-smithed?
-    if (changedBy === currentStatus.who) {
-      // just poopsmithed
-      await setNewCurrentStatus(updateStatus(Status.POOPSMITH), currentStatus);
-    } else {
-      // high paise!! 🙌
-      await setNewCurrentStatus(updateStatus(Status.FIXED), currentStatus);
+  if (currentStatus === null) {
+    // no current status, set new status
+    await setNewCurrentStatus(updateStatus(newStatusGood(newStatus) ? Status.FIXED : Status.BORKD), null);
+  } else {
+
+    // compare newStatus to current status
+    // case 1: do nothing if newStatus matches currentStatus
+    if (
+      (newStatusGood(newStatus) && currentStatusGood(currentStatus)) ||
+      (newStatusBad(newStatus) && currentStatusBad(currentStatus))
+    ) {
+      // no change in status, increment count and save
+      await updateCurrentStatus({
+        ...currentStatus,
+        count: currentStatus.count ? currentStatus.count + 1 : 2,
+      });
+    } else if (currentStatusBad(currentStatus)) {
+      // good news it's fixed! but is it fixed or just poop-smithed?
+      if (changedBy === currentStatus.who) {
+        // just poopsmithed
+        await setNewCurrentStatus(updateStatus(Status.POOPSMITH), currentStatus);
+      } else {
+        // high paise!! 🙌
+        await setNewCurrentStatus(updateStatus(Status.FIXED), currentStatus);
+      }
+    } else if (currentStatusGood(currentStatus)) {
+      // oh boy, someone has the golden poo
+      await setNewCurrentStatus(updateStatus(Status.BORKD), currentStatus);
     }
-  } else if (currentStatusGood(currentStatus)) {
-    // oh boy, someone has the golden poo
-    await setNewCurrentStatus(updateStatus(Status.BORKD), currentStatus);
   }
   return {
     statusCode: 204,
@@ -91,5 +97,5 @@ function updateStatusFactory(who: string, branch: ScenarioBranch, when?: string,
  */
 function branchName(branch: string): ScenarioBranch {
   const parts = branch.split('/');
-  return [parts[parts.length - 2], parts[parts.length-1]].join('/') as ScenarioBranch;
+  return [parts[parts.length - 2], parts[parts.length - 1]].join('/') as ScenarioBranch;
 }
