@@ -142,6 +142,11 @@ Then('the build status map is:', function (dataTable) {
   deepEqual(actual, expected);
 });
 
+Then('the team should be notified with a message:', async function (docString) {
+  
+  return 'pending';
+});
+
 function createEvent<T>(buildResults: T): Event {
   return {
     body: JSON.stringify(buildResults),
