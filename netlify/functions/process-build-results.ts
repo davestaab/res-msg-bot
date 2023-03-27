@@ -20,13 +20,12 @@ const handler: Handler = async (event) => {
   const currentStatus = await getCurrentStatus(branchName(branch));
   const updateStatus = updateStatusFactory(changedBy, branchName(branch), content.createdDate, buildNumber);
   const newBuildStatus = calculateNewBuildStatus(newStatus, currentStatus, changedBy, updateStatus);
-  await updateCurrentStatus(newBuildStatus);
-  await sendBuildResultMessage(newBuildStatus);
-
-
-  return {
-    statusCode: 204,
-  };
+  return Promise.all([
+    sendBuildResultMessage(newBuildStatus),
+    updateCurrentStatus(newBuildStatus),
+  ])
+    .then(() => ({ statusCode: 204 }))
+    .catch((err) => ({ statusCode: 500, body: err }));
 };
 
 export { handler };
