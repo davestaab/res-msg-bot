@@ -17,7 +17,8 @@ interface MockState {
   friendlyNameMap: FriendlyNameMap;
   historyState: BuildHistory;
   tvaReminder: POST | null;
-  buildMsg: BuildResults;
+  buildResult: BuildResults;
+  buildResultMsg: POST | null;
 }
 
 const initialStatus: BuildStatus = {
@@ -40,7 +41,8 @@ const state: MockState = {
     history: [],
   },
   tvaReminder: null,
-  buildMsg: {
+  buildResultMsg: null,
+  buildResult: {
     resource: {
       status: undefined,
       buildNumber: '',
@@ -75,6 +77,9 @@ export const setBuildHistoryState = (history: BuildStatus[]) => (state.historySt
 export const getTvaReminderState = () => state.tvaReminder
 export const setTvaReminderState = (reminder: POST | null) => (state.tvaReminder = reminder)
 
+export const getBuildResultMsg = () => state.buildResultMsg;
+export const setBuildResultMsg = (msg: POST) => state.buildResultMsg = msg;
+
 export const resetWorld = () => {
   state.status = {
     [initialStatus.branch]: {
@@ -85,34 +90,35 @@ export const resetWorld = () => {
   setBuildHistoryState([]);
   setTvaReminderState(null);
   resetBuildMsg();
+  state.buildResultMsg = null;
 };
 
 export function setWho(who: string) {
-  state.buildMsg.resource.requests[0].requestedFor.uniqueName = who;
+  state.buildResult.resource.requests[0].requestedFor.uniqueName = who;
 }
 
 export function setWhat(status: boolean) {
-  state.buildMsg.resource.status = status ? 'succeeded' : 'failed';
+  state.buildResult.resource.status = status ? 'succeeded' : 'failed';
 }
 
 export function setWhen(when: string) {
-  state.buildMsg.createdDate = when;
+  state.buildResult.createdDate = when;
 }
 
 export function setId(id: string) {
-  state.buildMsg.resource.buildNumber = id;
+  state.buildResult.resource.buildNumber = id;
 }
 export function setbranch(branch: string) {
-  state.buildMsg.resource.sourceGetVersion = `ab:refs/heads/${branch}:abcd1234`;
+  state.buildResult.resource.sourceGetVersion = `ab:refs/heads/${branch}:abcd1234`;
 }
 
-export function getBuildMsg() {
-  return state.buildMsg;
+export function getBuildResult() {
+  return state.buildResult;
 }
 
 function resetBuildMsg() {
-  state.buildMsg.resource.status = undefined;
-  state.buildMsg.resource.requests[0].requestedFor.uniqueName = undefined;
-  state.buildMsg.createdDate = undefined;
-  state.buildMsg.resource.buildNumber = '';
+  state.buildResult.resource.status = undefined;
+  state.buildResult.resource.requests[0].requestedFor.uniqueName = undefined;
+  state.buildResult.createdDate = undefined;
+  state.buildResult.resource.buildNumber = '';
 }

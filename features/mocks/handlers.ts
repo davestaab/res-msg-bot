@@ -7,8 +7,9 @@ import {
 } from '../../netlify/botClient.js';
 import { BuildHistory } from '../../src/types/BuildHistory.js';
 import { tvaEndpoint } from '../../netlify/functions/tva.js';
-import { getBuildHistoryState, getBuildStatusStateAllBranches, getFriendlyNameState, setBuildHistoryState, setTvaReminderState, updateBuildStatusMapState } from '../step-definitions/world.js';
+import { getBuildHistoryState, getBuildStatusStateAllBranches, getFriendlyNameState, setBuildHistoryState, setBuildResultMsg, setTvaReminderState, updateBuildStatusMapState } from '../step-definitions/world.js';
 import { BuildStatusMap } from '../../src/types/BuildStatusMap.js';
+import { testBuildMsgEndpoint } from '../../netlify/functions/process-build-results.js';
 
 export const handlers = [
   rest.get(buildStatusBasketUrl, (req, res, ctx) => {
@@ -32,6 +33,11 @@ export const handlers = [
   rest.post(tvaEndpoint(), async (req, res) => {
     const msg = (await req.json()) as DiscordPost;
     setTvaReminderState(msg);
+    return res();
+  }),
+  rest.post(testBuildMsgEndpoint(), async (req, res) => {
+    const msg = (await req.json()) as DiscordPost;
+    setBuildResultMsg(msg);
     return res();
   }),
 ];

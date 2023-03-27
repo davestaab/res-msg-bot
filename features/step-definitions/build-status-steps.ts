@@ -5,7 +5,7 @@ import { BuildStatus, Status } from '../../src/types/BuildStatus.js';
 import { deepEqual, equal } from 'assert';
 import { parseSimpleTime } from './parameterTypes.js';
 import { Event } from '@netlify/functions/dist/function/event.js';
-import { clearBuildStatusMapState, getBuildHistoryState, getBuildMsg, getBuildStatusState, getBuildStatusStateAllBranches, setbranch, setBuildHistoryState, setBuildStatusState, setFriendlyNameState, setId, setWhat, setWhen, setWho } from './world.js';
+import { clearBuildStatusMapState, getBuildHistoryState, getBuildResult, getBuildResultMsg, getBuildStatusState, getBuildStatusStateAllBranches, setbranch, setBuildHistoryState, setBuildStatusState, setFriendlyNameState, setId, setWhat, setWhen, setWho } from './world.js';
 
 Given(
   'the build status is currently {buildStatus} by {string} at {simpleTime} for branch {string}',
@@ -83,8 +83,7 @@ Given('no build statuses exist', function () {
 });
 
 When("the build run posts it's results", async function () {
-  const buildResult = getBuildMsg();
-  debugger;
+  const buildResult = getBuildResult();
   const results = await handler(createEvent(buildResult), {} as Context, () => undefined);
   equal(204, results?.statusCode ?? 0);
 });
@@ -143,8 +142,8 @@ Then('the build status map is:', function (dataTable) {
 });
 
 Then('the team should be notified with a message:', async function (docString) {
-  
-  return 'pending';
+  const actual = getBuildResultMsg();
+  deepEqual(actual, JSON.parse(docString));
 });
 
 function createEvent<T>(buildResults: T): Event {

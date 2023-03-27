@@ -21,15 +21,15 @@ export async function getCurrentStatusMap() {
   return await unwrapFetch<BuildStatusMap>(get(BUILD_STATUS_BASKET));
 }
 
-export async function setNewCurrentStatus(newStatus: BuildStatus, currentStatus: BuildStatus | null) {
-  await checkStatus(put(BUILD_STATUS_BASKET, { [newStatus.branch]: newStatus }));
-  // const buildHistory: BuildHistory = {
-  //   history: [currentStatus]
-  // };
-  // https://documenter.getpostman.com/view/3281832/SzmZeMLC#f1c2c2b2-63d3-42f6-b30d-94b08ed68ca9
-  // put will update existing content and append values to nested arrays
-  // await checkStatus(put(BUILD_HISTORY_BASKET, buildHistory));
-}
+// export async function setNewCurrentStatus(newStatus: BuildStatus, currentStatus: BuildStatus | null) {
+//   await checkStatus(put(BUILD_STATUS_BASKET, { [newStatus.branch]: newStatus }));
+//   // const buildHistory: BuildHistory = {
+//   //   history: [currentStatus]
+//   // };
+//   // https://documenter.getpostman.com/view/3281832/SzmZeMLC#f1c2c2b2-63d3-42f6-b30d-94b08ed68ca9
+//   // put will update existing content and append values to nested arrays
+//   // await checkStatus(put(BUILD_HISTORY_BASKET, buildHistory));
+// }
 
 export async function updateCurrentStatus(status: BuildStatus) {
   await checkStatus(put(BUILD_STATUS_BASKET, { [status.branch]: status }));
@@ -39,7 +39,6 @@ export async function updateCurrentStatus(status: BuildStatus) {
 export async function getFriendlyNameMap() {
   return await unwrapFetch<FriendlyNameMap>(get(FRIENDLY_NAME_MAP_BASKET));
 }
-
 
 async function unwrapFetch<R>(response: Promise<Response>) {
   return checkStatus(response).then(r => r.json()).then(r => r as R);
