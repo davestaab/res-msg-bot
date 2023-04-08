@@ -36,8 +36,24 @@ export async function updateCurrentStatus(status: BuildStatus) {
   return status;
 }
 
-export async function getFriendlyNameMap() {
-  return await unwrapFetch<FriendlyNameMap>(get(FRIENDLY_NAME_MAP_BASKET));
+export async function getFriendlyNameMap(): Promise<FriendlyNameMap> {
+  return {
+    "ORNL\\i47": "Dave",
+    "ORNL\\8pt": "Shannon",
+    "ORNL\\coa": "Chelsea",
+    "ORNL\\apv": "Aaron",
+    "ORNL\\4I6": "Alek",
+    "ORNL\\2za": "Anderson",
+    "ORNL\\dpy": "Preston",
+    "ORNL\\zgd": "Zach",
+    "ORNL\\wgz": "Will",
+    "ORNL\\iwf": "Isaac",
+    "ORNL\\y7i": "Camille",
+    "CMPY\\\\dvy": "Dave",
+    "lastdr@cmpy.com": "Dave",
+    "CMPY\\\\tnr": "Shannon"
+  }
+  // return await unwrapFetch<FriendlyNameMap>(get(FRIENDLY_NAME_MAP_BASKET));
 }
 
 async function unwrapFetch<R>(response: Promise<Response>) {

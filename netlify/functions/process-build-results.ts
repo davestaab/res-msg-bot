@@ -1,11 +1,7 @@
 import { Handler } from '@netlify/functions';
 import { BuildStatus, ScenarioBranch, Status } from '../../src/types/BuildStatus.js';
 import { BuildResults } from '../../src/types/BuildResults.js';
-import {
-  getCurrentStatus,
-  getFriendlyNameMap,
-  updateCurrentStatus,
-} from '../botClient.js';
+import { getFriendlyNameMap } from '../botClient.js';
 import { POST } from '../../src/types/DiscordPost.js';
 import fetch from 'node-fetch';
 
@@ -17,15 +13,20 @@ const handler: Handler = async (event) => {
   const changedBy = await changedByName(content);
   const getVersion = content.resource.sourceGetVersion;
   const [_, branch, _commit] = getVersion.split(':');
-  const currentStatus = await getCurrentStatus(branchName(branch));
+  // const currentStatus = await getCurrentStatus(branchName(branch));
   const updateStatus = updateStatusFactory(changedBy, branchName(branch), content.createdDate, buildNumber);
-  const newBuildStatus = calculateNewBuildStatus(newStatus, currentStatus, changedBy, updateStatus);
-  return Promise.all([
-    sendBuildResultMessage(newBuildStatus),
-    updateCurrentStatus(newBuildStatus),
-  ])
-    .then(() => ({ statusCode: 204 }))
-    .catch((err) => ({ statusCode: 500, body: err }));
+  const newBuildStatus = calculateNewBuildStatus(newStatus, null, changedBy, updateStatus);
+  // return Promise.all([
+  try {
+    await sendBuildResultMessage(newBuildStatus);
+    return { statusCode: 204 };
+  } catch (err) {
+    return { statusCode: 500, body: JSON.stringify(err) };
+  }
+  // updateCurrentStatus(newBuildStatus),
+  // ])
+  // .then(() => ({ statusCode: 204 }))
+  // .catch((err) => ({ statusCode: 500, body: err }));
 };
 
 export { handler };
