@@ -27,6 +27,7 @@ const handler: Handler = async (event) => {
   // ])
   // .then(() => ({ statusCode: 204 }))
   // .catch((err) => ({ statusCode: 500, body: err }));
+  // trigger deploy for env update
 };
 
 export { handler };
