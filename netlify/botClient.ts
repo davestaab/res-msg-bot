@@ -50,9 +50,9 @@ export async function getFriendlyNameMap(): Promise<FriendlyNameMap> {
     "ORNL\\iwf": "Isaac",
     "ORNL\\y7i": "Camille",
     "ORNL\\pon": "Pazilat",
-    "CMPY\\\\dvy": "Dave",
+    "CMPY\\dvy": "Dave",
     "lastdr@cmpy.com": "Dave",
-    "CMPY\\\\tnr": "Shannon"
+    "CMPY\\tnr": "Shannon"
   }
   // return await unwrapFetch<FriendlyNameMap>(get(FRIENDLY_NAME_MAP_BASKET));
 }

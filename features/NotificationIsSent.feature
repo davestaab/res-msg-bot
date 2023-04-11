@@ -7,9 +7,9 @@ So everyone knows what the status of the last test run is
     Given the friendly name mapping is:
       """
       {
-        "CMPY\\\\dvy": "Dave",
+        "CMPY\\dvy": "Dave",
         "lastdr@cmpy.com": "Dave",
-        "CMPY\\\\tnr": "Shannon"
+        "CMPY\\tnr": "Shannon"
       }
       """
 
@@ -46,7 +46,7 @@ So everyone knows what the status of the last test run is
       ```
 
   Scenario: Build results use friendly names
-    Given the build run by "CMPY\\dvy" for branch "release/lead-leopard" at 3:06 PM was successful
+    Given the build run by "CMPY\dvy" for branch "release/lead-leopard" at 3:06 PM was successful
     When the build run posts it's results
     Then the team should be notified with a message:
       ```
