@@ -3,6 +3,7 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "packageManager": "pnpm@7.29.3",
   "scripts": {
     "check:types": "tsc --noEmit",
     "copy:testResults": "mv cucumber-report.html dist/specs.html",
