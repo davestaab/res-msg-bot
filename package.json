@@ -1,7 +1,7 @@
 {
   "type": "module",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "packageManager": "pnpm@7.29.3",
   "scripts": {
@@ -13,7 +13,7 @@
     "test": "tsc && cucumber-js"
   },
   "dependencies": {
-    "@netlify/functions": "^1.0.0",
+    "@netlify/functions": "^1.4.0",
     "date-fns": "^2.28.0",
     "node-fetch": "^3.3.1",
     "pg": "^8.10.0"
