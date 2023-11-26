@@ -37,7 +37,7 @@ interface Embeds {
   /**
    * Embedded "rich" content.
    */
-  embeds: Embed[];
+  embeds?: Embed[];
 }
 
 /**

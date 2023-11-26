@@ -2,6 +2,7 @@ import { Handler } from '@netlify/functions';
 import { POST as DiscordPost } from '../../src/types/DiscordPost.js';
 import fetch from 'node-fetch';
 import format from 'date-fns/format/index.js';
+import { isHoliday } from '../holidays.js';
 
 const images = [
   'https://res-msg-bot.netlify.app/images/TVA-A-01.png',
@@ -24,22 +25,36 @@ const images = [
 export const tvaEndpoint = () => process.env.TVA_RES_ENDPOINT ?? 'https://res-test-app.com/tva-reminder';
 const handler: Handler = async () => {
   const resEndpoint = tvaEndpoint();
-  const postBody: DiscordPost = {
-    content: `@here ${format(new Date(), 'EEE MMM d')}`,
-    embeds: [
-      {
-        title: "Don't forget....",
-        description:
-          'Just a friendly reminder from the Time Variance Authority: ' +
-          'Avoid a nexus event and enter your time! We can all do our' +
-          ' part to protect and preserve the Sacred Timeline.\n\n' +
-          '-- The Time-Keepers',
-        image: {
-          url: randomImage(),
+  const holiday = isHoliday();
+  let postBody: DiscordPost;
+  if(!holiday) {
+     postBody = {
+      content: `@here ${format(new Date(), 'EEE MMM d')}`,
+      embeds: [
+        {
+          title: "Don't forget....",
+          description:
+            'Just a friendly reminder from the Time Variance Authority: ' +
+            'Avoid a nexus event and enter your time! We can all do our' +
+            ' part to protect and preserve the Sacred Timeline.\n\n' +
+            '-- The Time-Keepers',
+          image: {
+            url: randomImage(),
+          },
         },
-      },
-    ],
-  };
+      ],
+    };
+  } else {
+    postBody = {
+      content: `Special announcement from the TVA... It's ${holiday.name}!
+
+No need to enter your time today.
+Unless of course you're billing a project but you shouldn't be doing that.
+
+Enjoy the time off!!`,
+    };
+
+  }
   await fetch(resEndpoint, {
     method: 'POST',
     body: JSON.stringify(postBody),

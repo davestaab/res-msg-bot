@@ -14,3 +14,19 @@ Feature: A Reminder to submit time is posted to
     -- The Time-Keepers
     """
     And the time reminder embed should have an image
+
+  Scenario: A message is not sent on a holiday
+    Given the holidays are:
+      | date       | name       |
+      |2023-12-25  | Christmas  |
+    And today is "2023-12-25"
+    When a time reminder is requested
+    Then the time reminder content should be:
+      """
+      Special announcement from the TVA... It's Christmas!
+
+      No need to enter your time today.
+      Unless of course you're billing a project but you shouldn't be doing that.
+
+      Enjoy the time off!!
+      """

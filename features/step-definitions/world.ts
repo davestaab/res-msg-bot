@@ -3,6 +3,7 @@
 // but that seems like a lot of work for little gain.
 // we'll build our own API and reset for each test so each test is isolated. 
 
+import { setToday } from "../../netlify/holidays.js";
 import { BuildHistory } from "../../src/types/BuildHistory.js";
 import { BuildResults } from "../../src/types/BuildResults.js";
 import { BuildStatus, Status } from "../../src/types/BuildStatus.js";
@@ -90,6 +91,7 @@ export const resetWorld = () => {
   setBuildHistoryState([]);
   setTvaReminderState(null);
   resetBuildMsg();
+  setToday(null);
   state.buildResultMsg = null;
 };
 
