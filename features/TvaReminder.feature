@@ -4,6 +4,9 @@ Feature: A Reminder to submit time is posted to
   so they are not hounded by the time variance authority
 
   Scenario: A message is sent
+    Have to set the day as a non holiday or this fails when working on a holiday.
+    
+    Given today is "2024-01-10"
     When a time reminder is requested
     Then the time reminder should have content
     And the time reminder embed title should be "Don't forget...."
