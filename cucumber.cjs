@@ -6,6 +6,5 @@ module.exports = {
       snippetInterface: 'async-await',
     },
     format: ['html:cucumber-report.html'],
-    publishQuiet: true,
   },
 };

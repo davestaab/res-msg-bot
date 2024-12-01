@@ -4,7 +4,7 @@ export type Holiday = {
   name: string;
   date: string;
 };
-export const holidays: Holiday[] = [
+export let holidays: Holiday[] = [
   {
     name: 'Christmas',
     date: '2024-12-24'
@@ -55,7 +55,7 @@ export const holidays: Holiday[] = [
   },
 ]
 
-export const setHolidays = (holidays: Holiday[]) => holidays = holidays;
+export const setHolidays = (list: Holiday[]) => holidays = list;
 
 // let mockToday: Date | null = parse('2024-11-29', 'yyyy-MM-dd', new Date());
 let mockToday: Date | null = null;
