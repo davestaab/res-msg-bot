@@ -7,51 +7,51 @@ export type Holiday = {
 export const holidays: Holiday[] = [
   {
     name: 'Christmas',
-    date: '2023-12-25'
-  },
-  {
-    name: 'Christmas',
-    date: '2023-12-26'
-  },
-  {
-    name: 'New Years Day',
-    date: '2024-01-01'
-  },
-  {
-    name: 'Martin Luther King Jr. Day',
-    date: '2024-01-15'
-  },
-  {
-    name: 'Good Friday',
-    date: '2024-03-29'
-  },
-  {
-    name: 'Memorial Day',
-    date: '2024-05-27'
-  },
-  {
-    name: 'Independence Day',
-    date: '2024-07-04'
-  },
-  {
-    name: 'Labor Day',
-    date: '2024-09-02'
-  },
-  {
-    name: 'Thanksgiving',
-    date: '2024-11-28'
-  },
-  {
-    name: 'Thanksgiving',
-    date: '2024-11-29'
-  },
-  {
-    name: 'Christmas',
     date: '2024-12-24'
   },
   {
     name: 'Christmas',
     date: '2024-12-25'
+  },
+  {
+    name: 'New Years Day',
+    date: '2025-01-01'
+  },
+  {
+    name: 'Martin Luther King Jr. Day',
+    date: '2025-01-20'
+  },
+  {
+    name: 'Good Friday',
+    date: '2025-04-18'
+  },
+  {
+    name: 'Memorial Day',
+    date: '2025-05-26'
+  },
+  {
+    name: 'Independence Day',
+    date: '2025-07-04'
+  },
+  {
+    name: 'Labor Day',
+    date: '2025-09-01'
+  },
+  {
+    name: 'Thanksgiving',
+    date: '2025-11-27'
+  },
+  {
+    name: 'Thanksgiving',
+    date: '2025-11-28'
+  },
+  {
+    name: 'Christmas',
+    date: '2025-12-25'
+  },
+  {
+    name: 'Christmas',
+    date: '2025-12-26'
   },
 ]
 
