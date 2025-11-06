@@ -1,4 +1,3 @@
 [functions."tva"]
-schedule = "15 13 * * mon-fri"
 [build]
 command = "pnpm test && pnpm copy:testResults && pnpm copy:images"
